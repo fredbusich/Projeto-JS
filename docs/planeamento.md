@@ -87,9 +87,10 @@ Os três ecrãs são três `section` no mesmo `index.html`, e só um está visí
 - Barra de estado: **ronda** (ex.: 3/10), **pontos** e **tempo**
 - A frase, apresentada como um **memorando** de escritório
 - Os **botões de resposta**, criados pelo JavaScript em cada ronda
+- O crachá **"Quem é?"**, sempre visível na coluna da direita: antes da resposta mostra uma silhueta e "Funcionário por identificar"
 - Depois de responder:
   - o feedback: botão certo a verde, errado a vermelho
-  - o cartão **"Quem é?"**: foto, nome, resumo curto e link "Ler mais na Wikipédia"
+  - o crachá revela o autor: foto, nome, resumo curto e link "Ler mais na Wikipédia"
   - o botão **Próxima** / **Ver resultado**
 
 ### Fim
@@ -121,6 +122,7 @@ A coluna **essencial** tem de estar pronta a 14/10 e já cobre os 8 tópicos e a
 | Ecrã final com numero de acertos total, título e acertos por personagem | Tema claro/escuro |
 | Top 5 de recordes no `localStorage` | Responder com as teclas 1, 2 e 3 ou clicando |
 | Frases carregadas do `frases.json` com `fetch` | Animações |
+| Versão para telemóvel (media query) | |
 
 **Enquanto não houver temporizador**, cada acerto vale 10 pontos. **Enquanto não houver modo difícil**, os recordes são só do modo normal. A estrutura dos dados já fica preparada para os dois.
 
@@ -175,15 +177,24 @@ O prefixo `twws-` evita conflitos: o `localStorage` é partilhado por todos os s
 
 | # | Tópico | Onde aparece no jogo | Ficheiro |
 |---|---|---|---|
-| 1 | Lógica e controlo de fluxo | `if/else` para certo ou errado; `switch` no modo para gerar as opções; `if/else` em cadeia para o título final; ternário na classe do feedback | `jogo.js`, `ui.js` |
-| 2 | Dados simples | nome com `trim` e entre 2 e 15 caracteres; percentagem arredondada; tempo em `00:15` com `padStart`; data do recorde com `toLocaleDateString("pt-PT")`; resumo da Wikipédia cortado ao fim de uma palavra | `utils.js` |
-| 3 | Dados complexos (imutáveis) | baralhar as frases numa **cópia** (`[...frases]`); gerar opções do modo difícil com `filter`; histórico com spread (`[...historico, resposta]`); acertos por personagem com `reduce`; recordes com `filter` por modo, `sort` numa cópia e `slice(0, 5)` | `jogo.js`, `storage.js` |
-| 4 | DOM dinâmico | botões de resposta, cartão "Quem é?", lista de recordes e resumo final criados com `createElement` e `appendChild` | `ui.js` |
-| 5 | Reatividade e eventos | `submit` do formulário; `click` nas respostas; `change` no modo (atualiza os recordes mostrados); classes `.certa` / `.errada` ligadas com `classList` | `main.js`, `ui.js` |
+| 1 | Lógica e controlo de fluxo | `if/else` para certo ou errado; `switch` no modo para gerar as opções; `if/else` em cadeia para o título final; ternário na classe do feedback; **`for` clássico** a baralhar as frases (algoritmo de Fisher-Yates); `map`, `filter` e `reduce` nos dados | `jogo.js`, `ui.js`, `utils.js` |
+| 2 | Dados simples | **strings:** nome com `trim` e entre 2 e 15 caracteres, resumo da Wikipédia cortado ao fim de uma palavra; **números:** percentagem arredondada, tempo em `00:15` com `padStart`; **booleanos:** `som` (ligado/desligado) e `respondeu` (impede responder duas vezes na mesma ronda); **datas:** data do recorde com `toLocaleDateString("pt-PT")` | `utils.js`, `jogo.js` |
+| 3 | Dados complexos (imutáveis) | **arrays de objetos:** baralhar as frases numa **cópia** (`[...frases]`), gerar opções do modo difícil com `filter`, histórico com spread (`[...historico, resposta]`), acertos por personagem com `reduce`, recordes com `filter` por modo, `sort` numa cópia e `slice(0, 5)`; **objetos:** preferências alteradas sem mexer no original (`{ ...preferencias, som: false }`) | `jogo.js`, `storage.js` |
+| 4 | DOM dinâmico | botões de resposta, lista de recordes e acertos por personagem criados com `createElement` e `appendChild`; crachá "Quem é?" e barra de estado atualizados com `textContent` | `ui.js` |
+| 5 | Reatividade e eventos | `submit` do formulário; **`input` no nome** (contador "7/15" e o erro desaparece enquanto se escreve); `click` nas respostas; `change` no modo (atualiza os recordes mostrados); estados visuais ligados com `classList`: `.certa` / `.errada` nos botões e crachá `.por-revelar` → revelado | `main.js`, `ui.js` |
 | 6 | Scope e closures | `criarJogo()` guarda pontos, ronda e histórico em variáveis privadas: nada de fora (nem a consola) os altera; cache dos resumos da Wikipédia para não pedir o mesmo autor duas vezes | `jogo.js`, `api.js` |
 | 7 | Assincronismo | `fetch` do `frases.json` e da Wikipédia com `async/await` e `try/catch`; verificar `response.ok`; estado "A carregar…"; `audio.play()` também devolve uma Promise | `api.js` |
 | 8 | Modularização | 6 ficheiros com `import` / `export`, cada um com uma responsabilidade | `js/` |
 | — | Persistência | recordes e preferências no `localStorage`; partida a meio no `sessionStorage` | `storage.js` |
+
+### Outros requisitos do enunciado
+
+| Requisito | Como fica cumprido |
+|---|---|
+| Aplicação **responsiva** | pensada para computador, com media query para telemóvel: as duas colunas passam a uma |
+| Repositório público no GitHub | `fredbusich/Projeto-JS` (público) |
+| Publicada e funcional no GitHub Pages | ativado depois do merge do HTML; a apresentação é feita a partir do site publicado |
+| `README.md` | descrição do projeto, link para o GitHub Pages e como correr localmente (Live Server) |
 
 ## 8. Visual
 
@@ -223,7 +234,7 @@ O verde inicial (`#2e7d32`) dava **4,46 : 1** sobre o papel, abaixo do mínimo. 
 
 ### Letras
 
-- **Special Elite** (Google Fonts), letra de máquina de escrever: título do jogo e texto da frase.
+- **Courier Prime** (Google Fonts), letra de máquina de escrever: título do jogo e texto da frase. Foi escolhida em vez da Special Elite porque tem negrito e itálico (a Special Elite só tem um estilo).
 - **Letra do sistema** (`system-ui, sans-serif`): botões, formulário e resto do ecrã, para ficar legível.
 
 ## 9. Estrutura de ficheiros
