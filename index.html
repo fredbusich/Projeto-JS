@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jogo: adivinha quem disse a frase — Michael Scott, Dwight Schrute ou um filósofo?">
+    <title>That's What Who Said?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/main.js"></script>
+</head>
+<body>
+    <header>
+        <h1>That's What Who Said?</h1>
+        <button id="botao-som" type="button" aria-label="Desligar som">🔊</button>
+    </header>
+
+    <main>
+        <!-- ===== Ecrã 1: início ===== -->
+        <section id="ecra-inicio">
+            <div class="grelha">
+                <!-- Coluna esquerda: regras e formulário -->
+                <div class="cartao">
+                    <h2>Como se joga</h2>
+                    <p>Leia a frase e adivinhe quem disse: Michael, Dwight ou um filósofo?</p>
+                    <p>Filósofos em jogo: Sócrates, Nietzsche, Confúcio, Marco Aurélio e Sun Tzu.</p>
+
+                    <form id="form-inicio" novalidate>
+                        <label for="nome">O teu nome</label>
+                        <input id="nome" type="text" name="nome" maxlength="15" placeholder="Ex: Pam Beesly">
+                        <p id="erro-nome" class="erro" aria-live="polite"></p>
+
+                        <fieldset>
+                            <legend>Modo</legend>
+                            <label class="cartao-modo">
+                                <input type="radio" name="modo" value="normal" checked>
+                                <strong>Normal</strong>
+                                <span>Michael, Dwight ou Filósofo</span>
+                            </label>
+                            <label class="cartao-modo">
+                                <input type="radio" name="modo" value="dificil">
+                                <strong>Difícil</strong>
+                                <span>Adivinha o nome exato</span>
+                            </label>
+                        </fieldset>
+
+                        <button type="submit">Jogar</button>
+                    </form>
+                </div>
+
+                <!-- Coluna direita: recordes (os <li> são criados pelo JS) -->
+                <aside class="post-it">
+                    <h2>Recordes · <span id="recordes-modo">Modo normal</span></h2>
+                    <ol id="lista-recordes"></ol>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ===== Ecrã 2: jogo ===== -->
+        <section id="ecra-jogo" hidden>
+            <!-- Barra de estado: o JS atualiza os valores a cada ronda -->
+            <div class="barra-estado">
+                <h2 id="ronda">Ronda 1 de 10</h2>
+                <p>Pontos: <span id="pontos">0</span></p>
+                <p>Tempo: <span id="tempo">00:15</span></p>
+            </div>
+
+            <div class="grelha">
+                <!-- Coluna esquerda: memorando, opções e feedback -->
+                <div class="cartao memorando">
+                    <p class="memorando-titulo">Memorando</p>
+                    <p><strong>Para:</strong> <span id="memo-para">Jogador</span></p>
+                    <p><strong>Assunto:</strong> Quem disse isto?</p>
+
+                    <blockquote id="frase">
+                        <p id="texto-frase">A frase aparece aqui.</p>
+                    </blockquote>
+
+                    <!-- Os botões de resposta são criados pelo JS em cada ronda -->
+                    <div id="opcoes" class="opcoes"></div>
+                    <p id="feedback" class="feedback" aria-live="polite"></p>
+                </div>
+
+                <!-- Coluna direita: crachá do autor, sempre visível -->
+                <div class="coluna-lateral">
+                    <article id="cartao-autor" class="cracha por-revelar">
+                        <img id="autor-foto" src="img/sem-foto.svg" alt="" width="120" height="120">
+                        <p class="cracha-etiqueta">Quem é?</p>
+                        <h3 id="autor-nome">Funcionário por identificar</h3>
+                        <p id="autor-resumo">Responde para descobrir.</p>
+                        <p id="autor-fonte" class="cracha-fonte"></p>
+                        <a id="autor-link" href="#" target="_blank" rel="noopener" hidden>Ler mais na Wikipédia</a>
+                    </article>
+
+                    <button id="botao-proxima" type="button" hidden>Próxima →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Ecrã 3: fim ===== -->
+        <section id="ecra-fim" hidden>
+            <h2>Fim da partida</h2>
+
+            <div class="grelha">
+                <!-- Coluna esquerda: certificado com o título conquistado -->
+                <div class="cartao certificado">
+                    <p class="certificado-empresa">Dunder Mifflin · Sucursal de Scranton</p>
+                    <p>Certifica-se que <strong id="fim-nome">Jogador</strong> cumpriu os requisitos do cargo de:</p>
+                    <p id="titulo-final" class="titulo-final">Estagiário</p>
+                    <p id="resultado">0 de 10 acertos · 0% · 0 pontos</p>
+                </div>
+
+                <!-- Coluna direita: acertos por personagem e aviso de recorde -->
+                <div class="coluna-lateral">
+                    <div class="cartao">
+                        <h3>Acertos por personagem</h3>
+                        <ul id="acertos-personagem"></ul>
+                    </div>
+                    <p id="novo-recorde" class="post-it" hidden>Novo recorde!</p>
+                </div>
+            </div>
+
+            <div class="botoes-fim">
+                <button id="botao-repetir" type="button">Jogar de novo</button>
+                <button id="botao-voltar" type="button">Início</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Projeto prático · JavaScript · Frederico Busich</p>
+        <p>Resumos e fotos dos autores: Wikipédia</p>
+    </footer>
+</body>
+</html>
