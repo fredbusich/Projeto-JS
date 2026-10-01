@@ -1,0 +1,586 @@
+/* ===== variáveis ===== */
+:root {                                   /* :root = o <html>: o que está aqui vale para a página toda */
+    --cor-papel: #f4efe1;                 /* fundo da página: cor de papel */
+    --cor-memorando: #fffdf7;             /* cartões: um papel mais claro por cima do fundo */
+    --cor-tinta: #1e2733;                 /* texto principal */
+    --cor-cinza: #5b6470;                 /* texto secundário */
+    --cor-azul: #1f4e8c;                  /* azul de empresa: cabeçalho, botões, links */
+    --cor-azul-escuro: #173b6b;           /* botões no :hover */
+    --cor-azul-claro: #eef3fa;            /* fundos selecionados e :hover dos botões brancos */
+    --cor-post-it: #f7d774;               /* destaques: recordes, novo recorde */
+    --cor-verde: #276b2b;                 /* resposta certa */
+    --cor-vermelho: #b3261e;              /* resposta errada */
+    --cor-linha: #ddd5c0;                 /* bordas finas dos cartões */
+
+    --letra-maquina: "Courier Prime", monospace;   /* títulos e frases: máquina de escrever */
+    --letra-texto: system-ui, sans-serif;           /* botões, formulário e texto corrido */
+
+    --espaco: 16px;                       /* a unidade de espaço; os outros são múltiplos com calc() */
+    --largura-max: 1000px;                /* duas colunas: precisa de mais largura que o CV (880px) */
+    --raio: 6px;                          /* cantos arredondados de cartões e botões */
+    --sombra: 0 2px 8px rgba(30, 39, 51, 0.12);    /* sombra suave: o papel "levanta" do fundo */
+}
+
+/* ===== reset ===== */
+* {                                       /* * = todos os elementos */
+    margin: 0;                            /* tira as margens que o browser põe por defeito */
+    padding: 0;
+    box-sizing: border-box;               /* width passa a incluir padding e border: as contas batem certo */
+}
+
+[hidden] {                                /* [hidden] = qualquer elemento com o atributo hidden */
+    display: none !important;             /* sem isto, um display: flex/grid nosso "ganhava" ao hidden e o elemento aparecia */
+}
+
+/* ===== base ===== */
+body {
+    min-height: 100vh;                    /* a página ocupa pelo menos a altura do ecrã… */
+    display: flex;
+    flex-direction: column;               /* …com header, main e footer empilhados… */
+    font-family: var(--letra-texto);
+    line-height: 1.5;                     /* altura de linha 1,5× a fonte: mais fácil de ler */
+    color: var(--cor-tinta);
+    background: var(--cor-papel);
+}
+
+h1, h2, h3 {                              /* vírgula = a mesma regra para os três */
+    font-family: var(--letra-maquina);
+    line-height: 1.2;                     /* títulos mais apertados que o texto corrido */
+}
+
+h1 {
+    font-size: 1.8rem;                    /* rem = múltiplo da fonte base (16px): ≈ 29px */
+}
+
+h2 {
+    font-size: 1.4rem;                    /* ≈ 22px */
+}
+
+h3 {
+    font-size: 1.1rem;                    /* ≈ 18px */
+}
+
+a {
+    color: var(--cor-azul);
+}
+
+img {
+    max-width: 100%;                      /* a imagem nunca é mais larga que a caixa onde está */
+    display: block;                       /* tira o espacinho fantasma por baixo (img é inline por defeito) */
+}
+
+/* ===== layout: cabeçalho, conteúdo e rodapé ===== */
+header {
+    display: flex;
+    justify-content: space-between;       /* título à esquerda, botão de som à direita */
+    align-items: center;                  /* os dois centrados na vertical */
+    padding: var(--espaco) calc(var(--espaco) * 2);
+    color: #fff;
+    background: var(--cor-azul);
+}
+
+main {
+    flex: 1;                              /* …e o main cresce para empurrar o footer para o fundo */
+    width: 100%;
+    max-width: var(--largura-max);
+    margin: 0 auto;                       /* margem automática dos lados = centrado */
+    padding: calc(var(--espaco) * 2) var(--espaco);
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;       /* uma linha à esquerda, outra à direita */
+    flex-wrap: wrap;                      /* se não couberem lado a lado, a segunda desce */
+    gap: var(--espaco);
+    padding: var(--espaco) calc(var(--espaco) * 2);
+    font-size: 0.85rem;
+    color: var(--cor-cinza);
+    border-top: 1px solid var(--cor-linha);
+}
+
+/* As duas colunas usadas nos três ecrãs: uma regra, três usos */
+.grelha {
+    display: grid;
+    grid-template-columns: 2fr 1fr;       /* fr = fração do espaço livre: a esquerda fica com o dobro */
+    gap: calc(var(--espaco) * 2);         /* espaço entre as colunas */
+    align-items: start;                   /* cada coluna fica com a sua altura (não estica até à outra) */
+}
+
+.coluna-lateral {
+    display: flex;
+    flex-direction: column;               /* crachá e botão, ou cartão e post-it, um por baixo do outro */
+    gap: var(--espaco);
+}
+
+/* ===== componentes partilhados ===== */
+
+/* Cartão: a "folha de papel" branca */
+.cartao {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco);                   /* gap espaça os filhos: dispensa margens em cada parágrafo */
+    padding: calc(var(--espaco) * 2);
+    background: var(--cor-memorando);
+    border: 1px solid var(--cor-linha);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+/* Post-it: o papel amarelo, ligeiramente torto */
+.post-it {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco);
+    padding: calc(var(--espaco) * 1.5);
+    background: var(--cor-post-it);
+    box-shadow: var(--sombra);
+    transform: rotate(1deg);              /* roda 1 grau: parece colado à mão */
+}
+
+/* Botões */
+button {
+    font: inherit;                        /* o botão não herda a letra da página por defeito: assim herda */
+    font-weight: 700;
+    padding: calc(var(--espaco) * 0.75) calc(var(--espaco) * 1.5);
+    color: #fff;
+    background: var(--cor-azul);
+    border: 2px solid var(--cor-azul);
+    border-radius: var(--raio);
+    cursor: pointer;                      /* a mãozinha ao passar por cima */
+}
+
+button:hover {
+    background: var(--cor-azul-escuro);
+    border-color: var(--cor-azul-escuro);
+}
+
+button:focus-visible,
+input:focus-visible {                     /* :focus-visible = foco vindo do teclado (Tab), não do rato */
+    outline: 3px solid var(--cor-post-it);
+    outline-offset: 2px;                  /* o contorno fica um pouco afastado do elemento */
+}
+
+/* Botão de som: redondo e branco, no cabeçalho */
+#botao-som {
+    width: 44px;
+    height: 44px;                         /* 44px: o tamanho mínimo recomendado para tocar com o dedo */
+    padding: 0;
+    font-size: 1.2rem;
+    background: #fff;
+    border-color: #fff;
+    border-radius: 50%;                   /* 50% = círculo */
+}
+
+#botao-som:hover {
+    background: var(--cor-papel);
+}
+
+/* ===== ecrã de início ===== */
+
+/* Formulário: os campos uns por baixo dos outros */
+#form-inicio {
+    display: flex;
+    flex-direction: column;               /* em coluna, cada campo estica à largura toda */
+    gap: calc(var(--espaco) * 0.5);
+}
+
+label[for="nome"],                        /* [for="nome"] = só o label ligado ao campo do nome */
+legend {
+    font-weight: 700;
+}
+
+input[type="text"] {                      /* [type="text"] = só os campos de texto, não os radios */
+    font: inherit;                        /* como nos botões: o input não herda a letra por defeito */
+    padding: calc(var(--espaco) * 0.75);
+    background: #fff;
+    border: 2px solid var(--cor-linha);
+    border-radius: var(--raio);
+}
+
+input[type="text"]:focus {
+    border-color: var(--cor-azul);        /* o campo onde estás a escrever fica com borda azul */
+}
+
+.erro {
+    min-height: 1.5em;                    /* reserva o espaço da mensagem: o formulário não "salta" quando o erro aparece */
+    font-size: 0.9rem;
+    color: var(--cor-vermelho);
+}
+
+/* Modo: os dois cartões lado a lado */
+fieldset {
+    display: grid;
+    grid-template-columns: 1fr 1fr;       /* duas colunas iguais */
+    gap: var(--espaco);
+    border: none;                         /* tira a moldura que o browser desenha */
+}
+
+legend {
+    margin-bottom: calc(var(--espaco) * 0.5);
+}
+
+.cartao-modo {
+    display: grid;
+    grid-template-columns: auto 1fr;      /* o radio à esquerda, o texto à direita */
+    column-gap: calc(var(--espaco) * 0.5);
+    padding: var(--espaco);
+    background: #fff;
+    border: 2px solid var(--cor-linha);
+    border-radius: var(--raio);
+    cursor: pointer;                      /* o cartão inteiro é clicável (está dentro do label) */
+}
+
+.cartao-modo:hover {
+    border-color: var(--cor-azul);
+}
+
+.cartao-modo input {
+    grid-row: span 2;                     /* o radio ocupa as duas linhas: fica ao lado do título e da descrição */
+    margin-top: 0.3em;
+    accent-color: var(--cor-azul);        /* pinta o radio com o azul do jogo */
+}
+
+.cartao-modo span {
+    font-size: 0.9rem;
+    color: var(--cor-cinza);
+}
+
+.cartao-modo.selecionado {                /* sem espaço = os dois ao mesmo tempo: cartão-modo E selecionado */
+    background: var(--cor-azul-claro);
+    border-color: var(--cor-azul);        /* a classe .selecionado é posta e tirada pelo JS (evento change) */
+}
+
+/* Botão Jogar: grande, com a letra de máquina */
+#form-inicio button[type="submit"] {
+    margin-top: var(--espaco);
+    padding: var(--espaco);
+    font-family: var(--letra-maquina);
+    font-size: 1.3rem;
+    text-transform: uppercase;            /* JOGAR em maiúsculas sem mudar o texto do HTML */
+    letter-spacing: 0.1em;                /* letras mais afastadas */
+}
+
+/* Recordes: lista numerada no post-it */
+.post-it h2 {
+    font-size: 1.2rem;
+}
+
+#lista-recordes {
+    padding-left: calc(var(--espaco) * 1.5);    /* espaço à esquerda para os números 1., 2., 3. */
+    font-family: var(--letra-maquina);
+    font-size: 1.1rem;
+}
+
+#lista-recordes li {
+    padding: calc(var(--espaco) * 0.25) 0;
+    border-bottom: 1px dashed rgba(30, 39, 51, 0.3);   /* linha tracejada: papel pautado */
+}
+
+/* ===== ecrã do jogo ===== */
+
+/* Barra de estado: ronda à esquerda, pontos e tempo à direita */
+.barra-estado {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espaco) * 2);
+    margin-bottom: calc(var(--espaco) * 2);   /* afasta a barra das colunas de baixo */
+    padding: var(--espaco) calc(var(--espaco) * 1.5);
+    background: var(--cor-memorando);
+    border: 1px solid var(--cor-linha);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+#ronda {
+    margin-right: auto;                   /* margem automática à direita: empurra pontos e tempo para o outro lado */
+    font-size: 1.2rem;
+}
+
+.barra-estado span {
+    font-family: var(--letra-maquina);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+#tempo.urgente {                          /* classe posta pelo JS quando faltam 5 segundos ou menos */
+    color: var(--cor-vermelho);
+}
+
+/* Memorando: o cartão da frase, todo em letra de máquina */
+.memorando {
+    font-family: var(--letra-maquina);
+    border-top: 6px solid var(--cor-azul);   /* faixa azul no topo, como papel timbrado */
+}
+
+.memorando-titulo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+#frase {
+    padding: calc(var(--espaco) * 1.5) 0;
+    border-top: 2px solid var(--cor-linha);       /* a frase fica entre duas linhas, */
+    border-bottom: 2px solid var(--cor-linha);    /* como o corpo de um memorando */
+}
+
+#texto-frase {
+    font-size: 1.6rem;
+    font-style: italic;                   /* o itálico que a Special Elite não tinha */
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* Opções de resposta: os botões são criados pelo JS com a classe .opcao */
+.opcoes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   /* repeat(3, 1fr) = 1fr 1fr 1fr: três colunas iguais */
+    gap: var(--espaco);
+}
+
+.opcao {
+    padding: var(--espaco);
+    font-size: 1.1rem;
+    color: var(--cor-tinta);
+    background: #fff;
+    border-color: var(--cor-linha);
+}
+
+.opcao:enabled:hover {                    /* :enabled = só enquanto o botão está ativo (antes de responder) */
+    background: var(--cor-azul-claro);
+    border-color: var(--cor-azul);
+}
+
+.opcao:disabled {                         /* depois de responder, o JS desativa os botões (disabled = true) */
+    cursor: default;                      /* volta a seta normal: já não há nada para clicar */
+    opacity: 0.5;                         /* as opções que não interessam ficam esbatidas */
+}
+
+.opcao.certa,
+.opcao.errada {
+    opacity: 1;                           /* a certa e a escolhida ficam bem visíveis */
+    color: #fff;
+}
+
+.opcao.certa {
+    background: var(--cor-verde);
+    border-color: var(--cor-verde);
+}
+
+.opcao.errada {
+    background: var(--cor-vermelho);
+    border-color: var(--cor-vermelho);
+}
+
+/* Feedback: "Certo!" ou "Errado!" por baixo dos botões */
+.feedback {
+    min-height: 1.5em;                    /* espaço reservado, como no .erro do formulário */
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.feedback.certa {
+    color: var(--cor-verde);
+}
+
+.feedback.errada {
+    color: var(--cor-vermelho);
+}
+
+/* Crachá "Quem é?": sempre visível na coluna da direita */
+.cracha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;                  /* tudo centrado na horizontal */
+    gap: calc(var(--espaco) * 0.5);
+    padding: calc(var(--espaco) * 1.5);
+    text-align: center;
+    background: var(--cor-memorando);
+    border: 1px solid var(--cor-linha);
+    border-top: 14px solid var(--cor-azul);  /* faixa azul no topo: parece um crachá de empresa */
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+#autor-foto {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;                    /* corta a foto para caber no quadrado, sem a deformar */
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: var(--sombra);
+}
+
+.cracha-etiqueta {
+    font-family: var(--letra-maquina);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--cor-azul);
+}
+
+#autor-nome {
+    font-size: 1.4rem;
+}
+
+#autor-resumo {
+    font-size: 0.95rem;
+}
+
+.cracha-fonte {
+    font-family: var(--letra-maquina);
+    font-size: 0.85rem;
+    color: var(--cor-cinza);
+}
+
+.cracha.por-revelar {                     /* estado antes de responder: o JS tira esta classe para revelar o autor */
+    border-style: dashed;                 /* borda tracejada: "ainda por preencher" */
+    border-top-style: solid;              /* mas a faixa azul do topo fica sempre igual */
+}
+
+.cracha.por-revelar #autor-nome {
+    color: var(--cor-cinza);
+}
+
+#botao-proxima {
+    padding: var(--espaco);
+    font-family: var(--letra-maquina);
+    font-size: 1.2rem;
+}
+
+/* ===== ecrã final ===== */
+#ecra-fim > h2 {                          /* > = só o h2 filho direto da secção, não os de dentro dos cartões */
+    margin-bottom: calc(var(--espaco) * 2);
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+/* Certificado: moldura dupla, tudo centrado */
+.certificado {
+    align-items: center;
+    text-align: center;
+    border: 6px double var(--cor-azul);   /* double = duas linhas: a moldura clássica de um diploma */
+}
+
+.certificado-empresa {
+    font-family: var(--letra-maquina);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--cor-azul);
+}
+
+.titulo-final {
+    font-family: var(--letra-maquina);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--cor-azul);
+}
+
+#resultado {
+    width: 100%;
+    padding-top: var(--espaco);
+    font-family: var(--letra-maquina);
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-top: 1px dashed var(--cor-linha);
+}
+
+/* Acertos por personagem: cada <li> é criado pelo JS com nome, contagem e barra */
+#acertos-personagem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco);
+    list-style: none;                     /* sem bolinhas */
+}
+
+#acertos-personagem li {
+    display: grid;
+    grid-template-columns: 1fr auto;      /* nome à esquerda, "3/4" encostado à direita */
+    row-gap: calc(var(--espaco) * 0.25);
+}
+
+.barra {
+    grid-column: 1 / -1;                  /* a barra ocupa a linha toda: da primeira à última coluna (-1) */
+    height: 10px;
+    background: var(--cor-azul-claro);
+    border-radius: 5px;
+    overflow: hidden;                     /* o preenchimento não passa dos cantos arredondados */
+}
+
+.barra-preenchida {
+    height: 100%;
+    background: var(--cor-azul);          /* a largura (ex.: 75%) é posta pelo JS com style.width */
+}
+
+#novo-recorde {
+    font-family: var(--letra-maquina);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    transform: rotate(-2deg);             /* roda para o lado contrário ao dos outros post-its */
+}
+
+/* Botões do fim: lado a lado, centrados */
+.botoes-fim {
+    display: flex;
+    justify-content: center;
+    gap: var(--espaco);
+    margin-top: calc(var(--espaco) * 2);
+}
+
+#botao-voltar {                           /* botão secundário: branco com contorno azul */
+    color: var(--cor-azul);
+    background: #fff;
+}
+
+#botao-voltar:hover {
+    background: var(--cor-azul-claro);
+}
+
+/* ===== telemóvel ===== */
+@media (max-width: 767px) {               /* só se aplica a ecrãs até 767px de largura */
+    header {
+        padding: var(--espaco);
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .grelha {
+        grid-template-columns: 1fr;       /* as duas colunas passam a uma: a direita desce para baixo da esquerda */
+    }
+
+    .cartao {
+        padding: calc(var(--espaco) * 1.25);
+    }
+
+    fieldset,
+    .opcoes {
+        grid-template-columns: 1fr;       /* modos e respostas uns por baixo dos outros */
+    }
+
+    .barra-estado {
+        flex-wrap: wrap;                  /* se não couber numa linha, os pontos e o tempo descem */
+        gap: var(--espaco);
+    }
+
+    #texto-frase {
+        font-size: 1.25rem;
+    }
+
+    #ecra-fim > h2,
+    .titulo-final {
+        font-size: 1.5rem;
+    }
+
+    .botoes-fim {
+        flex-direction: column;           /* botões do fim um por cima do outro, à largura toda */
+    }
+}
