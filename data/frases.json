@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "texto": "Prefiro ser temido ou amado? Fácil: as duas coisas. Quero que as pessoas tenham medo de quanto me amam.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T2 · The Fight"
+  },
+  {
+    "id": 2,
+    "texto": "Às vezes começo uma frase e nem sei para onde ela vai. Só espero encontrá-la pelo caminho.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T5 · The Duel"
+  },
+  {
+    "id": 3,
+    "texto": "Não sou supersticioso, mas sou um bocadinho sticioso.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T4 · Fun Run"
+  },
+  {
+    "id": 4,
+    "texto": "A Wikipédia é a melhor coisa do mundo. Qualquer pessoa pode escrever o que quiser sobre qualquer assunto, por isso sabes que tens a melhor informação possível.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T3 · The Negotiation"
+  },
+  {
+    "id": 5,
+    "texto": "A sociedade ensina-nos que ter sentimentos e chorar é mau. Isso é treta, porque o luto não é errado.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T3 · Grief Counseling"
+  },
+  {
+    "id": 6,
+    "texto": "Eu sabia exatamente o que fazer. Mas, num sentido muito mais real, não fazia ideia do que fazer.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T5 · Stress Relief"
+  },
+  {
+    "id": 7,
+    "texto": "Se preciso que gostem de mim? De todo. Gosto que gostem de mim. Tenho de ter quem goste de mim. Mas não é uma necessidade compulsiva… como a minha necessidade de ser elogiado.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T4 · Fun Run"
+  },
+  {
+    "id": 8,
+    "texto": "Primeiro faz amigos, depois faz vendas, depois faz amor. Por nenhuma ordem em particular.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T6 · New Leads"
+  },
+  {
+    "id": 9,
+    "texto": "Sou madrugador e sou noctívago. Por isso sou sábio e tenho minhocas.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T2 · Office Olympics"
+  },
+  {
+    "id": 10,
+    "texto": "Engana-me uma vez, primeiro strike. Engana-me duas vezes, terceiro strike.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T3 · Traveling Salesmen"
+  },
+  {
+    "id": 11,
+    "texto": "O dicionário define casamento como a fusão de dois metais com um maçarico.",
+    "autor": "Michael Scott",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · T3 · Phyllis' Wedding"
+  },
+  {
+    "id": 12,
+    "texto": "Sempre que estou prestes a fazer alguma coisa, penso: um idiota faria isto? E, se fizesse, não faço.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T3 · Business School"
+  },
+  {
+    "id": 13,
+    "texto": "Através da concentração, consigo subir e baixar o meu colesterol à vontade.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T1 · Health Care"
+  },
+  {
+    "id": 14,
+    "texto": "Nunca sorrio se puder evitar. Mostrar os dentes é um sinal de submissão nos primatas.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T2 · Conflict Resolution"
+  },
+  {
+    "id": 15,
+    "texto": "As pessoas subestimam o poder da nostalgia. A nostalgia é uma das maiores fraquezas humanas, a seguir ao pescoço.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T9 · The Farm"
+  },
+  {
+    "id": 16,
+    "texto": "Na natureza não há seguro de saúde. Magoas a perna, não consegues correr, vem um leão e come-te. Mas eu não morri. Eu sou o leão.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T1 · Health Care"
+  },
+  {
+    "id": 17,
+    "texto": "Sou rápido. Para teres uma referência: fico algures entre uma cobra e um mangusto… e uma pantera.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T3 · The Merger"
+  },
+  {
+    "id": 18,
+    "texto": "Nem tudo é uma lição. Às vezes simplesmente falhas.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T3 · Initiation"
+  },
+  {
+    "id": 19,
+    "texto": "Como me descrevo? Três palavras: trabalhador, macho alfa, martelo pneumático, implacável, insaciável.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T3 · The Return"
+  },
+  {
+    "id": 20,
+    "texto": "Não tenho muita experiência com vampiros, mas já cacei lobisomens. Acertei num, mas quando lá cheguei já se tinha transformado no cão do vizinho.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T3 · Business School"
+  },
+  {
+    "id": 21,
+    "texto": "Nada me stressa. Exceto ter de procurar a aprovação dos meus inferiores.",
+    "autor": "Dwight Schrute",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · T5 · Stress Relief"
+  },
+  {
+    "id": 22,
+    "texto": "O que não me mata torna-me mais forte.",
+    "autor": "Friedrich Nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Crepúsculo dos Ídolos, Máximas e Flechas, 8"
+  },
+  {
+    "id": 23,
+    "texto": "Sem música, a vida seria um erro.",
+    "autor": "Friedrich Nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Crepúsculo dos Ídolos, Máximas e Flechas, 33"
+  },
+  {
+    "id": 24,
+    "texto": "Nos indivíduos, a loucura é rara; mas nos grupos, partidos, nações e épocas, é a regra.",
+    "autor": "Friedrich Nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Além do Bem e do Mal, §156"
+  },
+  {
+    "id": 25,
+    "texto": "Uma vida sem exame não vale a pena ser vivida.",
+    "autor": "Sócrates",
+    "grupo": "filosofo",
+    "wiki": "Sócrates",
+    "fonte": "Platão, Apologia de Sócrates, 38a"
+  },
+  {
+    "id": 26,
+    "texto": "Sou como um moscardo posto nesta cidade, que é como um cavalo grande e preguiçoso, para a picar e acordar.",
+    "autor": "Sócrates",
+    "grupo": "filosofo",
+    "wiki": "Sócrates",
+    "fonte": "Platão, Apologia de Sócrates, 30e"
+  },
+  {
+    "id": 27,
+    "texto": "O espanto é o sentimento próprio do filósofo: a filosofia não tem outra origem.",
+    "autor": "Sócrates",
+    "grupo": "filosofo",
+    "wiki": "Sócrates",
+    "fonte": "Platão, Teeteto, 155d"
+  },
+  {
+    "id": 28,
+    "texto": "Não é uma alegria ter amigos que vêm de longe?",
+    "autor": "Confúcio",
+    "grupo": "filosofo",
+    "wiki": "Confúcio",
+    "fonte": "Analectos, 1.1"
+  },
+  {
+    "id": 29,
+    "texto": "Nunca vi ninguém que amasse a virtude tanto como ama a beleza.",
+    "autor": "Confúcio",
+    "grupo": "filosofo",
+    "wiki": "Confúcio",
+    "fonte": "Analectos, 9.18"
+  },
+  {
+    "id": 30,
+    "texto": "Ver o que está certo e não o fazer é falta de coragem.",
+    "autor": "Confúcio",
+    "grupo": "filosofo",
+    "wiki": "Confúcio",
+    "fonte": "Analectos, 2.24"
+  },
+  {
+    "id": 31,
+    "texto": "Começa a manhã a dizer a ti mesmo: hoje vou encontrar gente intrometida, ingrata, arrogante, falsa, invejosa e antissocial.",
+    "autor": "Marco Aurélio",
+    "grupo": "filosofo",
+    "wiki": "Marco_Aurélio",
+    "fonte": "Meditações, 2.1"
+  },
+  {
+    "id": 32,
+    "texto": "A arte de viver parece-se mais com a luta do que com a dança.",
+    "autor": "Marco Aurélio",
+    "grupo": "filosofo",
+    "wiki": "Marco_Aurélio",
+    "fonte": "Meditações, 7.61"
+  },
+  {
+    "id": 33,
+    "texto": "A melhor vingança é não ser como quem te fez mal.",
+    "autor": "Marco Aurélio",
+    "grupo": "filosofo",
+    "wiki": "Marco_Aurélio",
+    "fonte": "Meditações, 6.6"
+  },
+  {
+    "id": 34,
+    "texto": "Toda a guerra se baseia no engano.",
+    "autor": "Sun Tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "A Arte da Guerra, cap. 1"
+  },
+  {
+    "id": 35,
+    "texto": "Que os teus planos sejam escuros e impenetráveis como a noite e, quando te moveres, cai como um raio.",
+    "autor": "Sun Tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "A Arte da Guerra, cap. 7"
+  },
+  {
+    "id": 36,
+    "texto": "A arte suprema da guerra é vencer o inimigo sem combater.",
+    "autor": "Sun Tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "A Arte da Guerra, cap. 3"
+  }
+]
