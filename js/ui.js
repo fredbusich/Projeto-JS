@@ -14,6 +14,7 @@ const el = {
         fim: document.getElementById("ecra-fim"),
     },
     botaoSom: document.getElementById("botao-som"),
+    volume: document.getElementById("volume"),
     nome: document.getElementById("nome"),
     contadorNome: document.getElementById("contador-nome"),
     erroNome: document.getElementById("erro-nome"),
@@ -127,6 +128,12 @@ export function mostrarRecordes(recordes, modo) {
 export function mostrarSom(ligado) {
     el.botaoSom.textContent = ligado ? "🔊" : "🔇";
     el.botaoSom.setAttribute("aria-label", ligado ? "Desligar som" : "Ligar som");
+    el.volume.disabled = !ligado;                     // som desligado: o volume não faz sentido
+}
+
+// Põe o slider na posição guardada (0 a 100)
+export function mostrarVolume(valor) {
+    el.volume.value = valor;
 }
 
 // Se as frases não carregarem, o jogo não pode começar

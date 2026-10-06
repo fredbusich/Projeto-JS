@@ -5,7 +5,7 @@
 const CHAVE_RECORDES = "twws-recordes";
 const CHAVE_PREFERENCIAS = "twws-preferencias";
 const MAX_RECORDES = 5;                               // top 5 de cada modo
-const PREFERENCIAS_PADRAO = { som: true, modo: "normal" };
+const PREFERENCIAS_PADRAO = { som: true, modo: "normal", volume: 30 };
 
 // ----- leitura e escrita genéricas -----
 // O localStorage só guarda TEXTO: JSON.stringify ao gravar, JSON.parse ao ler.

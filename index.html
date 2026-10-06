@@ -14,7 +14,10 @@
 <body>
     <header>
         <h1>That's What Who Said?</h1>
-        <button id="botao-som" type="button" aria-label="Desligar som">🔊</button>
+        <div class="controlo-som">
+            <input id="volume" type="range" min="0" max="100" step="5" value="30" aria-label="Volume da música">
+            <button id="botao-som" type="button" aria-label="Desligar som">🔊</button>
+        </div>
     </header>
 
     <main>
@@ -80,6 +83,7 @@
 
                     <!-- Os botões de resposta são criados pelo JS em cada ronda -->
                     <div id="opcoes" class="opcoes"></div>
+                    <p class="dica-teclas">Dica: também podes responder com as teclas 1, 2 e 3.</p>
                     <p id="feedback" class="feedback" aria-live="polite"></p>
                 </div>
 
