@@ -2,7 +2,7 @@
 // Tudo o que mexe no ecrã. Recebe dados (do jogo.js) e mostra-os; não decide regras.
 
 import { GRUPOS } from "./jogo.js";
-import { calcularPercentagem, cortarTexto, formatarData } from "./utils.js";
+import { calcularPercentagem, cortarTexto, formatarData, formatarTempo } from "./utils.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
 
@@ -23,6 +23,7 @@ const el = {
     listaRecordes: document.getElementById("lista-recordes"),
     ronda: document.getElementById("ronda"),
     pontos: document.getElementById("pontos"),
+    tempo: document.getElementById("tempo"),
     memoPara: document.getElementById("memo-para"),
     textoFrase: document.getElementById("texto-frase"),
     opcoes: document.getElementById("opcoes"),
@@ -175,9 +176,14 @@ export function mostrarResposta(resposta, escolhido, estado) {
         }
     });
 
-    el.feedback.textContent = resposta.acertou
-        ? `Certo! Foi ${resposta.frase.autor}. +${resposta.ganhos} pontos`
-        : `Errado! Foi ${resposta.frase.autor}.`;
+    // Três mensagens possíveis: acertou, o tempo acabou (escolhido = null) ou errou
+    if (resposta.acertou) {
+        el.feedback.textContent = `Certo! Foi ${resposta.frase.autor}. +${resposta.ganhos} pontos`;
+    } else if (escolhido === null) {
+        el.feedback.textContent = `Tempo esgotado! Foi ${resposta.frase.autor}.`;
+    } else {
+        el.feedback.textContent = `Errado! Foi ${resposta.frase.autor}.`;
+    }
     el.feedback.classList.add(resposta.acertou ? "certa" : "errada");   // ternário escolhe a classe
 
     el.pontos.textContent = estado.pontos;
@@ -186,6 +192,12 @@ export function mostrarResposta(resposta, escolhido, estado) {
     el.botaoProxima.textContent = estado.ronda === estado.total ? "Ver resultado →" : "Próxima →";
     el.botaoProxima.hidden = false;
     el.botaoProxima.focus();                          // quem joga com o teclado carrega logo em Enter
+}
+
+// Tempo na barra de estado: "00:12", a vermelho nos últimos 5 segundos
+export function mostrarTempo(segundos) {
+    el.tempo.textContent = formatarTempo(segundos);
+    el.tempo.classList.toggle("urgente", segundos <= 5);
 }
 
 // O crachá tem 4 estados, cada um com a sua função:

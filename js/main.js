@@ -6,13 +6,18 @@ import { carregarFrases, buscarAutor } from "./api.js";
 import { criarJogo } from "./jogo.js";
 import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
+import { criarTemporizador } from "./temporizador.js";
 import * as ui from "./ui.js";                       // * as ui = todas as funções exportadas, dentro de "ui"
 
 const MAX_NOME = 15;
+const TEMPO_RONDA = 15;                               // segundos por ronda
 
 // Estado do módulo. Num módulo, estas variáveis NÃO são globais: não existem em window.
 let frases = [];
 let jogo = null;
+
+// Um só temporizador para o jogo todo: a cada segundo atualiza o ecrã; ao chegar a 0, o tempo esgota
+const temporizador = criarTemporizador(TEMPO_RONDA, ui.mostrarTempo, tempoEsgotado);
 
 // ----- arranque -----
 
@@ -94,10 +99,13 @@ function comecarPartida(nome, modo) {
     jogo = criarJogo(frases, modo, nome);
     ui.mostrarEcra("jogo");
     ui.mostrarRonda(jogo.estado(), responder);       // responder é passada como callback
+    temporizador.iniciar();
 }
 
 async function responder(valor) {
-    const resposta = jogo.responder(valor);
+    temporizador.parar();
+    // Os segundos que sobram entram como bónus (só contam se a resposta estiver certa)
+    const resposta = jogo.responder(valor, temporizador.segundos());
     if (resposta === null) {
         return;                                       // resposta repetida: o jogo ignorou
     }
@@ -116,6 +124,11 @@ async function responder(valor) {
             ui.autorIndisponivel();
         }
     }
+}
+
+// O temporizador chegou a 0: responder "nada" (null) conta como errada
+function tempoEsgotado() {
+    responder(null);
 }
 
 // Enquanto a Wikipédia respondia, o jogador pode ter avançado. Nesse caso,
@@ -138,6 +151,7 @@ function proximaRonda() {
         ui.mostrarEcra("fim");
     } else {
         ui.mostrarRonda(jogo.estado(), responder);
+        temporizador.iniciar();                       // relógio novo para a ronda nova
     }
 }
 
