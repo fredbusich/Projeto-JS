@@ -189,6 +189,17 @@ legend {
     font-weight: 700;
 }
 
+label[for="nome"] {
+    display: flex;
+    justify-content: space-between;       /* "O teu nome" à esquerda, contador "7/15" à direita */
+}
+
+.contador {
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--cor-cinza);
+}
+
 input[type="text"] {                      /* [type="text"] = só os campos de texto, não os radios */
     font: inherit;                        /* como nos botões: o input não herda a letra por defeito */
     padding: calc(var(--espaco) * 0.75);
@@ -266,14 +277,33 @@ legend {
 }
 
 #lista-recordes {
-    padding-left: calc(var(--espaco) * 1.5);    /* espaço à esquerda para os números 1., 2., 3. */
+    list-style: none;                     /* o número "1." é escrito pelo JS, para caber na grelha */
     font-family: var(--letra-maquina);
-    font-size: 1.1rem;
 }
 
 #lista-recordes li {
-    padding: calc(var(--espaco) * 0.25) 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* posição | nome (estica) | pontos encostados à direita */
+    column-gap: calc(var(--espaco) * 0.5);
+    padding: calc(var(--espaco) * 0.4) 0;
     border-bottom: 1px dashed rgba(30, 39, 51, 0.3);   /* linha tracejada: papel pautado */
+}
+
+.recorde-posicao,
+.recorde-pontos {
+    font-weight: 700;
+}
+
+.recorde-data {
+    grid-column: 2 / -1;                  /* a data desce para a linha de baixo, debaixo do nome */
+    font-size: 0.8rem;
+    color: var(--cor-cinza);
+}
+
+#lista-recordes .sem-recordes {           /* estado vazio: uma frase só, sem grelha */
+    display: block;
+    font-style: italic;
+    border-bottom: none;
 }
 
 /* ===== ecrã do jogo ===== */
