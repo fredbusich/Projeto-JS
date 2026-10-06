@@ -39,14 +39,15 @@ export async function carregarFrases() {
 
 // ----- Wikipédia -----
 
-// API de resumos da Wikipédia em português: não precisa de chave e aceita pedidos do GitHub Pages
+// API de resumos da Wikipédia em português: não precisa de chave e aceita pedidos do GitHub Pages.
+// O jogo usa-a para a FOTO de cada autor e para o link "Ler mais na Wikipédia".
 const URL_WIKIPEDIA = "https://pt.wikipedia.org/api/rest_v1/page/summary/";
 // A mesma API em inglês: só usada como plano B para a foto
 const URL_WIKIPEDIA_EN = "https://en.wikipedia.org/api/rest_v1/page/summary/";
 
 // Plano B: se a página portuguesa não tiver foto, tenta a da página inglesa (caso do Michael).
 // Devolve o endereço da foto, ou null se também não houver. Nunca lança erro:
-// uma foto em falta não pode estragar o crachá, que já tem o resumo em português.
+// uma foto em falta não pode estragar o crachá, que já tem o link e os dados do frases.json.
 async function buscarFotoEmIngles(titulo) {
     try {
         const resposta = await fetch(URL_WIKIPEDIA_EN + encodeURIComponent(titulo));
@@ -61,7 +62,7 @@ async function buscarFotoEmIngles(titulo) {
 }
 
 // Cria a função de busca com uma CACHE privada (closure).
-// A cache é um objeto { "Dwight_Schrute": { foto, resumo, link }, … } que só a função devolvida vê.
+// A cache é um objeto { "Dwight_Schrute": { foto, link }, … } que só a função devolvida vê.
 // Assim, se o Dwight aparecer 3 vezes na partida, a Wikipédia só é chamada na primeira.
 function criarBuscaComCache() {
     const cache = {};
@@ -80,9 +81,9 @@ function criarBuscaComCache() {
 
         const dados = await resposta.json();
 
-        // Validar o conteúdo, como nas frases: sem resumo, não há nada para mostrar
-        if (!dados.extract) {
-            throw new Error(`A página "${titulo}" não tem resumo`);
+        // Validar o conteúdo, como nas frases: tem de ser uma página normal (não "desambiguação" nem erro)
+        if (dados.type !== "standard") {
+            throw new Error(`A página "${titulo}" não é uma página normal (${dados.type})`);
         }
 
         // Foto: a da página portuguesa; se não existir, o plano B em inglês (só nesse caso há 2.º pedido)
@@ -91,7 +92,6 @@ function criarBuscaComCache() {
         // Fica só com o que o crachá precisa
         const autor = {
             foto,                                     // atalho para foto: foto
-            resumo: dados.extract,
             link: dados.content_urls ? dados.content_urls.desktop.page : `https://pt.wikipedia.org/wiki/${titulo}`,
         };
 

@@ -2,6 +2,7 @@
   {
     "id": 1,
     "texto": "Prefiro ser temido ou amado? Fácil: as duas coisas. Quero que as pessoas tenham medo de quanto me amam.",
+    "nota": "Maquiavel escreveu que era mais seguro ser temido. O Michael leu só metade e quis as duas coisas.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -10,6 +11,7 @@
   {
     "id": 2,
     "texto": "Às vezes começo uma frase e nem sei para onde ela vai. Só espero encontrá-la pelo caminho.",
+    "nota": "O Michael chama a isto uma «improversação». Os filósofos chamam-lhe falta de plano.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -18,6 +20,7 @@
   {
     "id": 3,
     "texto": "Não sou supersticioso, mas sou um bocadinho sticioso.",
+    "nota": "Nenhum filósofo inventou uma palavra tão depressa. Nem tão mal.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -26,6 +29,7 @@
   {
     "id": 4,
     "texto": "A Wikipédia é a melhor coisa do mundo. Qualquer pessoa pode escrever o que quiser sobre qualquer assunto, por isso sabes que tens a melhor informação possível.",
+    "nota": "Ironia: a foto deste crachá veio da Wikipédia. O Michael ficaria orgulhoso.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -34,6 +38,7 @@
   {
     "id": 5,
     "texto": "A sociedade ensina-nos que ter sentimentos e chorar é mau. Isso é treta, porque o luto não é errado.",
+    "nota": "Disse isto no funeral que organizou para um pássaro. Com discurso e tudo.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -42,6 +47,7 @@
   {
     "id": 6,
     "texto": "Eu sabia exatamente o que fazer. Mas, num sentido muito mais real, não fazia ideia do que fazer.",
+    "nota": "Sócrates admitia que não sabia. O Michael consegue saber e não saber ao mesmo tempo.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -50,6 +56,7 @@
   {
     "id": 7,
     "texto": "Se preciso que gostem de mim? De todo. Gosto que gostem de mim. Tenho de ter quem goste de mim. Mas não é uma necessidade compulsiva… como a minha necessidade de ser elogiado.",
+    "nota": "Diz que não precisa. Repete-o quatro vezes. Precisa.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -58,6 +65,7 @@
   {
     "id": 8,
     "texto": "Primeiro faz amigos, depois faz vendas, depois faz amor. Por nenhuma ordem em particular.",
+    "nota": "Uma estratégia de vendas que nenhum manual de gestão aprovaria. Por nenhuma ordem em particular.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -66,6 +74,7 @@
   {
     "id": 9,
     "texto": "Sou madrugador e sou noctívago. Por isso sou sábio e tenho minhocas.",
+    "nota": "Dois provérbios entraram numa frase. Só saiu um Michael.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -74,6 +83,7 @@
   {
     "id": 10,
     "texto": "Engana-me uma vez, primeiro strike. Engana-me duas vezes, terceiro strike.",
+    "nota": "Juntou um provérbio com basebol. Perderam os dois.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -82,6 +92,7 @@
   {
     "id": 11,
     "texto": "O dicionário define casamento como a fusão de dois metais com um maçarico.",
+    "nota": "Disse isto num casamento, ao microfone. Ninguém o impediu.",
     "autor": "Michael Scott",
     "grupo": "michael",
     "wiki": "Michael_Scott_(The_Office)",
@@ -90,6 +101,7 @@
   {
     "id": 12,
     "texto": "Sempre que estou prestes a fazer alguma coisa, penso: um idiota faria isto? E, se fizesse, não faço.",
+    "nota": "Um teste filosófico infalível. O Dwight só nunca o aplicou ao Dwight.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -98,6 +110,7 @@
   {
     "id": 13,
     "texto": "Através da concentração, consigo subir e baixar o meu colesterol à vontade.",
+    "nota": "Medicamente impossível. Espiritualmente, muito Dwight.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -106,6 +119,7 @@
   {
     "id": 14,
     "texto": "Nunca sorrio se puder evitar. Mostrar os dentes é um sinal de submissão nos primatas.",
+    "nota": "O Dwight leu um livro sobre primatas e levou-o demasiado a sério. Como tudo.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -114,6 +128,7 @@
   {
     "id": 15,
     "texto": "As pessoas subestimam o poder da nostalgia. A nostalgia é uma das maiores fraquezas humanas, a seguir ao pescoço.",
+    "nota": "Começa como um poeta, acaba como um manual de artes marciais.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -122,6 +137,7 @@
   {
     "id": 16,
     "texto": "Na natureza não há seguro de saúde. Magoas a perna, não consegues correr, vem um leão e come-te. Mas eu não morri. Eu sou o leão.",
+    "nota": "Começou a falar de seguros de saúde e acabou no topo da cadeia alimentar.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -130,6 +146,7 @@
   {
     "id": 17,
     "texto": "Sou rápido. Para teres uma referência: fico algures entre uma cobra e um mangusto… e uma pantera.",
+    "nota": "Um currículo escrito por um documentário de vida selvagem.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -138,6 +155,7 @@
   {
     "id": 18,
     "texto": "Nem tudo é uma lição. Às vezes simplesmente falhas.",
+    "nota": "Parece Marco Aurélio. Foi dito a um estagiário depois da primeira venda falhada.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -146,6 +164,7 @@
   {
     "id": 19,
     "texto": "Como me descrevo? Três palavras: trabalhador, macho alfa, martelo pneumático, implacável, insaciável.",
+    "nota": "Três palavras. Cinco palavras. Zero vergonha.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -154,6 +173,7 @@
   {
     "id": 20,
     "texto": "Não tenho muita experiência com vampiros, mas já cacei lobisomens. Acertei num, mas quando lá cheguei já se tinha transformado no cão do vizinho.",
+    "nota": "Em vampiros não acredita. Em lobisomens, já é outra conversa.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -162,6 +182,7 @@
   {
     "id": 21,
     "texto": "Nada me stressa. Exceto ter de procurar a aprovação dos meus inferiores.",
+    "nota": "Gestão de stress à moda da quinta de beterrabas.",
     "autor": "Dwight Schrute",
     "grupo": "dwight",
     "wiki": "Dwight_Schrute",
@@ -170,6 +191,7 @@
   {
     "id": 22,
     "texto": "O que não me mata torna-me mais forte.",
+    "nota": "O Nietzsche disse-o primeiro. O Dwight só tem a quinta de beterrabas.",
     "autor": "Friedrich Nietzsche",
     "grupo": "filosofo",
     "wiki": "Friedrich_Nietzsche",
@@ -178,6 +200,7 @@
   {
     "id": 23,
     "texto": "Sem música, a vida seria um erro.",
+    "nota": "Frase digna de um poster motivacional no gabinete do Michael.",
     "autor": "Friedrich Nietzsche",
     "grupo": "filosofo",
     "wiki": "Friedrich_Nietzsche",
@@ -186,6 +209,7 @@
   {
     "id": 24,
     "texto": "Nos indivíduos, a loucura é rara; mas nos grupos, partidos, nações e épocas, é a regra.",
+    "nota": "O Nietzsche nunca trabalhou na Dunder Mifflin, mas descreveu-a na perfeição.",
     "autor": "Friedrich Nietzsche",
     "grupo": "filosofo",
     "wiki": "Friedrich_Nietzsche",
@@ -194,6 +218,7 @@
   {
     "id": 25,
     "texto": "Uma vida sem exame não vale a pena ser vivida.",
+    "nota": "O Michael examina a vida dele todos os dias. Em voz alta. Para a câmara.",
     "autor": "Sócrates",
     "grupo": "filosofo",
     "wiki": "Sócrates",
@@ -202,6 +227,7 @@
   {
     "id": 26,
     "texto": "Sou como um moscardo posto nesta cidade, que é como um cavalo grande e preguiçoso, para a picar e acordar.",
+    "nota": "O Sócrates a picar Atenas é o Dwight a picar o Jim. Só que de toga.",
     "autor": "Sócrates",
     "grupo": "filosofo",
     "wiki": "Sócrates",
@@ -210,6 +236,7 @@
   {
     "id": 27,
     "texto": "O espanto é o sentimento próprio do filósofo: a filosofia não tem outra origem.",
+    "nota": "O espanto é o sentimento do filósofo. E da Pam, sempre que o Michael abre a boca.",
     "autor": "Sócrates",
     "grupo": "filosofo",
     "wiki": "Sócrates",
@@ -218,6 +245,7 @@
   {
     "id": 28,
     "texto": "Não é uma alegria ter amigos que vêm de longe?",
+    "nota": "É o Michael sempre que alguém da sede vem visitar Scranton.",
     "autor": "Confúcio",
     "grupo": "filosofo",
     "wiki": "Confúcio",
@@ -226,6 +254,7 @@
   {
     "id": 29,
     "texto": "Nunca vi ninguém que amasse a virtude tanto como ama a beleza.",
+    "nota": "Escrito há 2500 anos. Continua a descrever metade do escritório.",
     "autor": "Confúcio",
     "grupo": "filosofo",
     "wiki": "Confúcio",
@@ -234,6 +263,7 @@
   {
     "id": 30,
     "texto": "Ver o que está certo e não o fazer é falta de coragem.",
+    "nota": "O Dwight citaria isto antes de ir fazer queixa ao Michael.",
     "autor": "Confúcio",
     "grupo": "filosofo",
     "wiki": "Confúcio",
@@ -242,6 +272,7 @@
   {
     "id": 31,
     "texto": "Começa a manhã a dizer a ti mesmo: hoje vou encontrar gente intrometida, ingrata, arrogante, falsa, invejosa e antissocial.",
+    "nota": "Um imperador romano a descrever uma segunda-feira na Dunder Mifflin.",
     "autor": "Marco Aurélio",
     "grupo": "filosofo",
     "wiki": "Marco_Aurélio",
@@ -250,6 +281,7 @@
   {
     "id": 32,
     "texto": "A arte de viver parece-se mais com a luta do que com a dança.",
+    "nota": "O Dwight concorda. Foi por isso que escolheu o karaté e não o ballet.",
     "autor": "Marco Aurélio",
     "grupo": "filosofo",
     "wiki": "Marco_Aurélio",
@@ -258,6 +290,7 @@
   {
     "id": 33,
     "texto": "A melhor vingança é não ser como quem te fez mal.",
+    "nota": "Um conselho que o Dwight nunca seguiu. O Jim também não.",
     "autor": "Marco Aurélio",
     "grupo": "filosofo",
     "wiki": "Marco_Aurélio",
@@ -266,6 +299,7 @@
   {
     "id": 34,
     "texto": "Toda a guerra se baseia no engano.",
+    "nota": "O lema do Jim sempre que prega uma partida ao Dwight.",
     "autor": "Sun Tzu",
     "grupo": "filosofo",
     "wiki": "Sun_Tzu",
@@ -274,6 +308,7 @@
   {
     "id": 35,
     "texto": "Que os teus planos sejam escuros e impenetráveis como a noite e, quando te moveres, cai como um raio.",
+    "nota": "Isto está sublinhado no exemplar do Dwight. Duas vezes.",
     "autor": "Sun Tzu",
     "grupo": "filosofo",
     "wiki": "Sun_Tzu",
@@ -282,6 +317,7 @@
   {
     "id": 36,
     "texto": "A arte suprema da guerra é vencer o inimigo sem combater.",
+    "nota": "A estratégia do Michael para despedir alguém: nunca o fazer.",
     "autor": "Sun Tzu",
     "grupo": "filosofo",
     "wiki": "Sun_Tzu",

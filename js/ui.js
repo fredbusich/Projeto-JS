@@ -2,9 +2,14 @@
 // Tudo o que mexe no ecrã. Recebe dados (do jogo.js) e mostra-os; não decide regras.
 
 import { GRUPOS } from "./jogo.js";
-import { calcularPercentagem, cortarTexto, formatarData, formatarTempo } from "./utils.js";
+import { calcularPercentagem, formatarData, formatarTempo } from "./utils.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
+
+// Fotos guardadas no projeto, que substituem as da Wikipédia (que mostra o ator, não a personagem)
+const FOTOS_LOCAIS = {
+    "Dwight Schrute": "img/dwight.jpg",
+};
 
 // Os elementos da página, procurados UMA vez e guardados num objeto
 const el = {
@@ -32,7 +37,7 @@ const el = {
     cracha: document.getElementById("cartao-autor"),
     autorFoto: document.getElementById("autor-foto"),
     autorNome: document.getElementById("autor-nome"),
-    autorResumo: document.getElementById("autor-resumo"),
+    autorNota: document.getElementById("autor-nota"),
     autorFonte: document.getElementById("autor-fonte"),
     autorLink: document.getElementById("autor-link"),
     botaoProxima: document.getElementById("botao-proxima"),
@@ -207,44 +212,42 @@ export function mostrarTempo(segundos) {
     el.tempo.classList.toggle("urgente", segundos <= 5);
 }
 
-// O crachá tem 4 estados, cada um com a sua função:
-// por revelar → a carregar → completo (com a Wikipédia) ou indisponível (se o pedido falhar)
+// O crachá tem 3 estados, cada um com a sua função:
+// por revelar → revelado (dados do frases.json) → completo (foto e link da Wikipédia)
 
 // 1) Antes de responder: silhueta e "Funcionário por identificar"
 export function esconderAutor() {
     el.cracha.classList.add("por-revelar");
-    el.cracha.classList.remove("a-carregar");
     el.autorFoto.src = SEM_FOTO;
     el.autorFoto.alt = "";
     el.autorNome.textContent = "Funcionário por identificar";
-    el.autorResumo.textContent = "Responde para descobrir.";
+    el.autorNota.textContent = "Responde para descobrir.";
     el.autorFonte.textContent = "";
     el.autorLink.hidden = true;
 }
 
-// 2) Logo a seguir à resposta: o nome e a fonte já se sabem (vêm do frases.json); o resumo ainda vem a caminho
+// 2) Logo a seguir à resposta: tudo o que vem do frases.json aparece já (nome, nota cómica, fonte).
+//    Se houver foto local, também; senão, a silhueta fica até a Wikipédia responder.
 export function revelarAutor(frase) {
     el.cracha.classList.remove("por-revelar");
-    el.cracha.classList.add("a-carregar");
     el.autorNome.textContent = frase.autor;
+    el.autorNota.textContent = frase.nota;
     el.autorFonte.textContent = `Fonte: ${frase.fonte}`;
     el.autorFoto.alt = frase.autor;
-    el.autorResumo.textContent = "A carregar…";
+
+    const fotoLocal = FOTOS_LOCAIS[frase.autor];      // undefined se o autor não estiver no objeto
+    if (fotoLocal) {
+        el.autorFoto.src = fotoLocal;
+    }
 }
 
-// 3) A Wikipédia respondeu: foto, resumo cortado e link
-export function completarAutor(wiki) {
-    el.cracha.classList.remove("a-carregar");
-    el.autorFoto.src = wiki.foto || SEM_FOTO;         // sem foto na Wikipédia (Michael): fica a silhueta
-    el.autorResumo.textContent = cortarTexto(wiki.resumo, 200);
+// 3) A Wikipédia respondeu: a foto (se não houver uma local) e o link
+export function completarAutor(frase, wiki) {
+    if (!FOTOS_LOCAIS[frase.autor]) {
+        el.autorFoto.src = wiki.foto || SEM_FOTO;     // sem foto em lado nenhum: fica a silhueta
+    }
     el.autorLink.href = wiki.link;
     el.autorLink.hidden = false;
-}
-
-// 4) A Wikipédia falhou: o jogo continua, o crachá fica só com o nome e a fonte
-export function autorIndisponivel() {
-    el.cracha.classList.remove("a-carregar");
-    el.autorResumo.textContent = "Resumo indisponível de momento.";
 }
 
 // ----- ecrã final -----

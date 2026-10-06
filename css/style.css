@@ -3,13 +3,15 @@
     --cor-papel: #f4efe1;                 /* fundo da página: cor de papel */
     --cor-memorando: #fffdf7;             /* cartões: um papel mais claro por cima do fundo */
     --cor-tinta: #1e2733;                 /* texto principal */
-    --cor-cinza: #5b6470;                 /* texto secundário */
+    --cor-cinza: #3b434e;                 /* texto secundário (mais escuro que o original #5b6470 por causa do vidro) */
     --cor-azul: #1f4e8c;                  /* azul de empresa: cabeçalho, botões, links */
     --cor-azul-escuro: #173b6b;           /* botões no :hover */
     --cor-azul-claro: #eef3fa;            /* fundos selecionados e :hover dos botões brancos */
     --cor-post-it: #f7d774;               /* destaques: recordes, novo recorde */
     --cor-verde: #276b2b;                 /* resposta certa */
     --cor-vermelho: #b3261e;              /* resposta errada */
+    --texto-verde: #1a4a1e;               /* verde e vermelho mais escuros para TEXTO sobre o vidro */
+    --texto-vermelho: #7f1a14;            /* (os fundos dos botões continuam com as cores de cima) */
     --cor-linha: #ddd5c0;                 /* bordas finas dos cartões */
 
     --letra-maquina: "Courier Prime", monospace;   /* títulos e frases: máquina de escrever */
@@ -19,6 +21,22 @@
     --largura-max: 1000px;                /* duas colunas: precisa de mais largura que o CV (880px) */
     --raio: 6px;                          /* cantos arredondados de cartões e botões */
     --sombra: 0 2px 8px rgba(30, 39, 51, 0.12);    /* sombra suave: o papel "levanta" do fundo */
+
+    /* Fundo com a foto do escritório: o 4.º número é a força do véu escuro (0 = foto original, 1 = preto) */
+    --veu: rgba(15, 20, 28, 0.35);
+
+    /* Efeito de vidro ("liquid glass"). Duas camadas: um brilho branco que vem do canto de cima
+       e desaparece a meio, e por baixo a cor do memorando a 70% (o 4.º número é a opacidade).
+       Não baixar dos 0.7: abaixo disso, o texto deixa de ter contraste nas zonas escuras da foto. */
+    --vidro: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 60%),
+             rgba(255, 253, 247, 0.7);
+    --vidro-borda: rgba(255, 255, 255, 0.6);       /* aresta clara: o "reflexo" na borda do vidro */
+    --desfoque: blur(20px) saturate(160%);         /* desfoca e aviva as cores do que está atrás */
+    --sombra-vidro: inset 0 1px 0 rgba(255, 255, 255, 0.8),    /* inset = sombra POR DENTRO: linha de luz no topo */
+                    0 8px 32px rgba(15, 20, 28, 0.3);          /* sombra por fora: o vidro "flutua" */
+    --raio-vidro: 16px;                   /* cantos mais redondos, como no liquid glass */
+    --branco-vidro: rgba(255, 255, 255, 0.7);      /* campos e botões dentro do vidro: também translúcidos */
+    --azul-claro-vidro: rgba(238, 243, 250, 0.85);
 }
 
 /* ===== reset ===== */
@@ -40,7 +58,12 @@ body {
     font-family: var(--letra-texto);
     line-height: 1.5;                     /* altura de linha 1,5× a fonte: mais fácil de ler */
     color: var(--cor-tinta);
-    background: var(--cor-papel);
+    /* Duas camadas: por cima, um véu escuro (escurece a foto sem mudar as cores);
+       por baixo, a foto do escritório, a cobrir o ecrã todo e fixa enquanto a página desliza */
+    background:
+        linear-gradient(var(--veu), var(--veu)),
+        url("../img/escritorio.jpg") center / cover fixed,
+        var(--cor-papel);                 /* se a foto não carregar, fica a cor de papel de sempre */
 }
 
 h1, h2, h3 {                              /* vírgula = a mesma regra para os três */
@@ -61,7 +84,7 @@ h3 {
 }
 
 a {
-    color: var(--cor-azul);
+    color: var(--cor-azul-escuro);        /* o azul mais escuro mantém o contraste sobre o vidro */
 }
 
 img {
@@ -96,7 +119,10 @@ footer {
     padding: var(--espaco) calc(var(--espaco) * 2);
     font-size: 0.85rem;
     color: var(--cor-cinza);
-    border-top: 1px solid var(--cor-linha);
+    background: var(--vidro);             /* rodapé também em vidro, para o texto não ficar sobre a foto */
+    -webkit-backdrop-filter: var(--desfoque);
+    backdrop-filter: var(--desfoque);
+    border-top: 1px solid var(--vidro-borda);
 }
 
 /* As duas colunas usadas nos três ecrãs: uma regra, três usos */
@@ -115,16 +141,24 @@ footer {
 
 /* ===== componentes partilhados ===== */
 
-/* Cartão: a "folha de papel" branca */
+/* Vidro: a mesma receita para cartões, barra de estado e crachá */
+.cartao,
+.barra-estado,
+.cracha {
+    background: var(--vidro);
+    -webkit-backdrop-filter: var(--desfoque);     /* -webkit- = o mesmo, para versões mais antigas do Safari */
+    backdrop-filter: var(--desfoque);     /* desfoca o que está ATRÁS do elemento (o escritório) */
+    box-shadow: var(--sombra-vidro);
+}
+
+/* Cartão: a "folha de vidro" com o conteúdo */
 .cartao {
     display: flex;
     flex-direction: column;
     gap: var(--espaco);                   /* gap espaça os filhos: dispensa margens em cada parágrafo */
     padding: calc(var(--espaco) * 2);
-    background: var(--cor-memorando);
-    border: 1px solid var(--cor-linha);
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
+    border: 1px solid var(--vidro-borda);
+    border-radius: var(--raio-vidro);
 }
 
 /* Post-it: o papel amarelo, ligeiramente torto */
@@ -222,7 +256,7 @@ label[for="nome"] {
 input[type="text"] {                      /* [type="text"] = só os campos de texto, não os radios */
     font: inherit;                        /* como nos botões: o input não herda a letra por defeito */
     padding: calc(var(--espaco) * 0.75);
-    background: #fff;
+    background: var(--branco-vidro);
     border: 2px solid var(--cor-linha);
     border-radius: var(--raio);
 }
@@ -254,7 +288,7 @@ legend {
     grid-template-columns: auto 1fr;      /* o radio à esquerda, o texto à direita */
     column-gap: calc(var(--espaco) * 0.5);
     padding: var(--espaco);
-    background: #fff;
+    background: var(--branco-vidro);
     border: 2px solid var(--cor-linha);
     border-radius: var(--raio);
     cursor: pointer;                      /* o cartão inteiro é clicável (está dentro do label) */
@@ -276,7 +310,7 @@ legend {
 }
 
 .cartao-modo.selecionado {                /* sem espaço = os dois ao mesmo tempo: cartão-modo E selecionado */
-    background: var(--cor-azul-claro);
+    background: var(--azul-claro-vidro);
     border-color: var(--cor-azul);        /* a classe .selecionado é posta e tirada pelo JS (evento change) */
 }
 
@@ -334,10 +368,8 @@ legend {
     gap: calc(var(--espaco) * 2);
     margin-bottom: calc(var(--espaco) * 2);   /* afasta a barra das colunas de baixo */
     padding: var(--espaco) calc(var(--espaco) * 1.5);
-    background: var(--cor-memorando);
-    border: 1px solid var(--cor-linha);
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
+    border: 1px solid var(--vidro-borda); /* fundo, desfoque e sombra vêm da regra do vidro */
+    border-radius: var(--raio-vidro);
 }
 
 #ronda {
@@ -392,12 +424,12 @@ legend {
     padding: var(--espaco);
     font-size: 1.1rem;
     color: var(--cor-tinta);
-    background: #fff;
+    background: var(--branco-vidro);
     border-color: var(--cor-linha);
 }
 
 .opcao:enabled:hover {                    /* :enabled = só enquanto o botão está ativo (antes de responder) */
-    background: var(--cor-azul-claro);
+    background: var(--azul-claro-vidro);
     border-color: var(--cor-azul);
 }
 
@@ -435,11 +467,11 @@ legend {
 }
 
 .feedback.certa {
-    color: var(--cor-verde);
+    color: var(--texto-verde);
 }
 
 .feedback.errada {
-    color: var(--cor-vermelho);
+    color: var(--texto-vermelho);
 }
 
 /* Crachá "Quem é?": sempre visível na coluna da direita */
@@ -450,11 +482,9 @@ legend {
     gap: calc(var(--espaco) * 0.5);
     padding: calc(var(--espaco) * 1.5);
     text-align: center;
-    background: var(--cor-memorando);
-    border: 1px solid var(--cor-linha);
+    border: 1px solid var(--vidro-borda); /* fundo, desfoque e sombra vêm da regra do vidro */
     border-top: 14px solid var(--cor-azul);  /* faixa azul no topo: parece um crachá de empresa */
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
+    border-radius: var(--raio-vidro);
 }
 
 #autor-foto {
@@ -472,15 +502,16 @@ legend {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--cor-azul);
+    color: var(--cor-azul-escuro);        /* texto pequeno sobre vidro: o azul escuro garante o contraste */
 }
 
 #autor-nome {
     font-size: 1.4rem;
 }
 
-#autor-resumo {
-    font-size: 0.95rem;
+#autor-nota {                             /* a nota cómica, como um comentário escrito à mão no crachá */
+    font-size: 1rem;
+    font-style: italic;
 }
 
 .cracha-fonte {
@@ -491,15 +522,12 @@ legend {
 
 .cracha.por-revelar {                     /* estado antes de responder: o JS tira esta classe para revelar o autor */
     border-style: dashed;                 /* borda tracejada: "ainda por preencher" */
+    border-color: var(--cor-cinza);       /* cinzenta, para o tracejado se ver sobre o vidro */
     border-top-style: solid;              /* mas a faixa azul do topo fica sempre igual */
+    border-top-color: var(--cor-azul);
 }
 
 .cracha.por-revelar #autor-nome {
-    color: var(--cor-cinza);
-}
-
-.cracha.a-carregar #autor-resumo {        /* enquanto a Wikipédia não responde: "A carregar…" em itálico cinzento */
-    font-style: italic;
     color: var(--cor-cinza);
 }
 
@@ -511,7 +539,13 @@ legend {
 
 /* ===== ecrã final ===== */
 #ecra-fim > h2 {                          /* > = só o h2 filho direto da secção, não os de dentro dos cartões */
+    display: inline-block;                /* a "etiqueta" de vidro fica só do tamanho do texto */
     margin-bottom: calc(var(--espaco) * 2);
+    padding: calc(var(--espaco) * 0.5) var(--espaco);
+    background: var(--vidro);             /* sem isto, o título ficava direto sobre a foto escura */
+    -webkit-backdrop-filter: var(--desfoque);
+    backdrop-filter: var(--desfoque);
+    border-radius: var(--raio);
     font-size: 2rem;
     text-transform: uppercase;
 }
@@ -529,7 +563,7 @@ legend {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--cor-azul);
+    color: var(--cor-azul-escuro);
 }
 
 .titulo-final {

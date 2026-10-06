@@ -160,18 +160,17 @@ async function responder(valor) {
     }
 
     ui.mostrarResposta(resposta, valor, jogo.estado());
-    ui.revelarAutor(resposta.frase);                  // nome e fonte já; resumo "A carregar…"
+    ui.revelarAutor(resposta.frase);                  // nome, nota cómica e fonte: já, sem esperar
 
-    // Pedido à Wikipédia: o jogo NÃO espera por ele. Já se pode carregar em "Próxima".
+    // Pedido à Wikipédia (foto e link): o jogo NÃO espera por ele. Já se pode carregar em "Próxima".
     try {
         const wiki = await buscarAutor(resposta.frase.wiki);
         if (aindaNaMesmaRonda(resposta.frase.id)) {
-            ui.completarAutor(wiki);
+            ui.completarAutor(resposta.frase, wiki);
         }
     } catch (erro) {
-        if (aindaNaMesmaRonda(resposta.frase.id)) {
-            ui.autorIndisponivel();
-        }
+        // Sem Wikipédia, o crachá fica com a silhueta (ou a foto local) e sem link: o jogo continua
+        console.warn("Wikipédia indisponível:", erro.message);
     }
 }
 

@@ -65,18 +65,3 @@ export function calcularPercentagem(parte, total) {
 export function formatarData(dataISO) {
     return new Date(dataISO).toLocaleDateString("pt-PT");
 }
-
-// Corta um texto comprido sem partir palavras a meio e acrescenta "…".
-// Vai ser usado no resumo da Wikipédia (Fase 2).
-export function cortarTexto(texto, maximo) {
-    if (texto.length <= maximo) {
-        return texto;                                   // já é curto: fica igual
-    }
-
-    const cortado = texto.slice(0, maximo);
-    const ultimoEspaco = cortado.lastIndexOf(" ");      // onde acaba a última palavra inteira
-
-    // Ternário: se encontrou um espaço, corta aí; senão, corta no máximo
-    const final = ultimoEspaco > 0 ? cortado.slice(0, ultimoEspaco) : cortado;
-    return final + "…";
-}
