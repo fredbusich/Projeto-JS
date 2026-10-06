@@ -74,6 +74,7 @@ header {
     display: flex;
     justify-content: space-between;       /* título à esquerda, botão de som à direita */
     align-items: center;                  /* os dois centrados na vertical */
+    gap: var(--espaco);                   /* espaço mínimo entre o título e os controlos do som */
     padding: var(--espaco) calc(var(--espaco) * 2);
     color: #fff;
     background: var(--cor-azul);
@@ -155,7 +156,7 @@ button:hover {
 }
 
 button:focus-visible,
-input:focus-visible {                     /* :focus-visible = foco vindo do teclado (Tab), não do rato */
+input:focus-visible {                     /* também apanha o slider do volume */                     /* :focus-visible = foco vindo do teclado (Tab), não do rato */
     outline: 3px solid var(--cor-post-it);
     outline-offset: 2px;                  /* o contorno fica um pouco afastado do elemento */
 }
@@ -173,6 +174,24 @@ input:focus-visible {                     /* :focus-visible = foco vindo do tecl
 
 #botao-som:hover {
     background: var(--cor-papel);
+}
+
+/* Volume e botão de som lado a lado, no cabeçalho */
+.controlo-som {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espaco) * 0.75);
+}
+
+#volume {
+    width: 110px;
+    accent-color: var(--cor-post-it);     /* a barra e o "botão" do slider em amarelo, sobre o azul */
+    cursor: pointer;
+}
+
+#volume:disabled {                        /* com o som desligado, o volume fica esbatido e inativo */
+    opacity: 0.4;
+    cursor: default;
 }
 
 /* ===== ecrã de início ===== */
@@ -403,6 +422,11 @@ legend {
     border-color: var(--cor-vermelho);
 }
 
+.dica-teclas {
+    font-size: 0.85rem;
+    color: var(--cor-cinza);
+}
+
 /* Feedback: "Certo!" ou "Errado!" por baixo dos botões */
 .feedback {
     min-height: 1.5em;                    /* espaço reservado, como no .erro do formulário */
@@ -588,6 +612,10 @@ legend {
         font-size: 1.3rem;
     }
 
+    #volume {
+        width: 70px;                      /* slider mais curto para caber ao lado do título */
+    }
+
     .grelha {
         grid-template-columns: 1fr;       /* as duas colunas passam a uma: a direita desce para baixo da esquerda */
     }
@@ -617,5 +645,9 @@ legend {
 
     .botoes-fim {
         flex-direction: column;           /* botões do fim um por cima do outro, à largura toda */
+    }
+
+    .dica-teclas {
+        display: none;                    /* no telemóvel não há teclado físico: a dica não faz sentido */
     }
 }

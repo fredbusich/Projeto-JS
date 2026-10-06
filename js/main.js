@@ -7,10 +7,14 @@ import { criarJogo } from "./jogo.js";
 import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
 import { criarTemporizador } from "./temporizador.js";
+import { criarMusica } from "./musica.js";
 import * as ui from "./ui.js";                       // * as ui = todas as funções exportadas, dentro de "ui"
 
 const MAX_NOME = 15;
 const TEMPO_RONDA = 15;                               // segundos por ronda
+const TECLAS_RESPOSTA = ["1", "2", "3"];              // tecla 1 = 1.º botão, 2 = 2.º, 3 = 3.º
+
+const musica = criarMusica("audio/tema.mp3");
 
 // Estado do módulo. Num módulo, estas variáveis NÃO são globais: não existem em window.
 let frases = [];
@@ -26,6 +30,8 @@ async function iniciar() {
     const preferencias = lerPreferencias();
     ui.definirModo(preferencias.modo);
     ui.mostrarSom(preferencias.som);
+    ui.mostrarVolume(preferencias.volume);
+    musica.definirVolume(preferencias.volume);
     ui.mostrarRecordes(lerRecordes(preferencias.modo), preferencias.modo);
 
     ligarEventos();
@@ -57,11 +63,29 @@ function ligarEventos() {
         });
     });
 
-    // Som ligado/desligado: inverte o booleano e guarda-o (a música chega na Fase 2)
+    // Som ligado/desligado: inverte o booleano, guarda-o e toca ou pára a música
     document.getElementById("botao-som").addEventListener("click", () => {
         const preferencias = guardarPreferencia("som", !lerPreferencias().som);
         ui.mostrarSom(preferencias.som);
+
+        if (preferencias.som) {
+            musica.tocar();
+        } else {
+            musica.pausar();
+        }
     });
+
+    // Volume: "input" dispara enquanto se arrasta o slider, por isso o som muda em tempo real.
+    // O valor do slider vem como texto ("45"): Number() converte-o em número.
+    const slider = document.getElementById("volume");
+    slider.addEventListener("input", () => {
+        const volume = Number(slider.value);
+        musica.definirVolume(volume);
+        guardarPreferencia("volume", volume);
+    });
+
+    // Teclado: 1, 2 e 3 respondem, mas só no ecrã do jogo
+    document.addEventListener("keydown", aoCarregarTecla);
 
     document.getElementById("botao-proxima").addEventListener("click", proximaRonda);
 
@@ -92,7 +116,32 @@ function aoSubmeter(evento) {
         return;
     }
 
+    // O clique em "Jogar" é a primeira interação: a partir daqui o browser já deixa tocar som
+    if (lerPreferencias().som) {
+        musica.tocar();
+    }
+
     comecarPartida(formatarNome(nome), modo);
+}
+
+function aoCarregarTecla(evento) {
+    // Fora do jogo, ou com Ctrl/Alt (ex.: Ctrl+1 muda de separador no browser), as teclas não respondem
+    if (jogo === null || jogo.terminou() || document.getElementById("ecra-jogo").hidden) {
+        return;
+    }
+    if (evento.ctrlKey || evento.altKey || evento.metaKey) {
+        return;
+    }
+
+    const posicao = TECLAS_RESPOSTA.indexOf(evento.key);   // "2" → 1; outra tecla → -1
+    if (posicao === -1) {
+        return;
+    }
+
+    const { opcoes, respondeu } = jogo.estado();
+    if (!respondeu) {
+        responder(opcoes[posicao].valor);
+    }
 }
 
 function comecarPartida(nome, modo) {
