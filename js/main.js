@@ -2,7 +2,7 @@
 // O "maestro": liga os eventos da página às regras (jogo.js) e ao ecrã (ui.js).
 
 // No browser, o import precisa do "./" e da extensão ".js"
-import { carregarFrases } from "./api.js";
+import { carregarFrases, buscarAutor } from "./api.js";
 import { criarJogo } from "./jogo.js";
 import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
@@ -96,14 +96,36 @@ function comecarPartida(nome, modo) {
     ui.mostrarRonda(jogo.estado(), responder);       // responder é passada como callback
 }
 
-function responder(valor) {
+async function responder(valor) {
     const resposta = jogo.responder(valor);
     if (resposta === null) {
         return;                                       // resposta repetida: o jogo ignorou
     }
 
     ui.mostrarResposta(resposta, valor, jogo.estado());
-    ui.revelarAutor(resposta.frase);
+    ui.revelarAutor(resposta.frase);                  // nome e fonte já; resumo "A carregar…"
+
+    // Pedido à Wikipédia: o jogo NÃO espera por ele. Já se pode carregar em "Próxima".
+    try {
+        const wiki = await buscarAutor(resposta.frase.wiki);
+        if (aindaNaMesmaRonda(resposta.frase.id)) {
+            ui.completarAutor(wiki);
+        }
+    } catch (erro) {
+        if (aindaNaMesmaRonda(resposta.frase.id)) {
+            ui.autorIndisponivel();
+        }
+    }
+}
+
+// Enquanto a Wikipédia respondia, o jogador pode ter avançado. Nesse caso,
+// a resposta que chega atrasada já não pertence ao crachá que está no ecrã: ignora-se.
+function aindaNaMesmaRonda(idFrase) {
+    if (jogo.terminou()) {
+        return false;
+    }
+    const estado = jogo.estado();
+    return estado.respondeu && estado.frase.id === idFrase;
 }
 
 function proximaRonda() {

@@ -2,7 +2,7 @@
 // Tudo o que mexe no ecrã. Recebe dados (do jogo.js) e mostra-os; não decide regras.
 
 import { GRUPOS } from "./jogo.js";
-import { calcularPercentagem, formatarData } from "./utils.js";
+import { calcularPercentagem, cortarTexto, formatarData } from "./utils.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
 
@@ -188,9 +188,13 @@ export function mostrarResposta(resposta, escolhido, estado) {
     el.botaoProxima.focus();                          // quem joga com o teclado carrega logo em Enter
 }
 
-// Crachá antes de responder: silhueta e "Funcionário por identificar"
+// O crachá tem 4 estados, cada um com a sua função:
+// por revelar → a carregar → completo (com a Wikipédia) ou indisponível (se o pedido falhar)
+
+// 1) Antes de responder: silhueta e "Funcionário por identificar"
 export function esconderAutor() {
     el.cracha.classList.add("por-revelar");
+    el.cracha.classList.remove("a-carregar");
     el.autorFoto.src = SEM_FOTO;
     el.autorFoto.alt = "";
     el.autorNome.textContent = "Funcionário por identificar";
@@ -199,21 +203,29 @@ export function esconderAutor() {
     el.autorLink.hidden = true;
 }
 
-// Crachá depois de responder. "wiki" (foto, resumo, link) chega na Fase 2; sem ele, mostra só o nome e a fonte.
-export function revelarAutor(frase, wiki = null) {
+// 2) Logo a seguir à resposta: o nome e a fonte já se sabem (vêm do frases.json); o resumo ainda vem a caminho
+export function revelarAutor(frase) {
     el.cracha.classList.remove("por-revelar");
+    el.cracha.classList.add("a-carregar");
     el.autorNome.textContent = frase.autor;
     el.autorFonte.textContent = `Fonte: ${frase.fonte}`;
     el.autorFoto.alt = frase.autor;
+    el.autorResumo.textContent = "A carregar…";
+}
 
-    if (wiki) {
-        el.autorFoto.src = wiki.foto || SEM_FOTO;     // sem foto na Wikipédia (Michael): a silhueta
-        el.autorResumo.textContent = wiki.resumo;
-        el.autorLink.href = wiki.link;
-        el.autorLink.hidden = false;
-    } else {
-        el.autorResumo.textContent = "";
-    }
+// 3) A Wikipédia respondeu: foto, resumo cortado e link
+export function completarAutor(wiki) {
+    el.cracha.classList.remove("a-carregar");
+    el.autorFoto.src = wiki.foto || SEM_FOTO;         // sem foto na Wikipédia (Michael): fica a silhueta
+    el.autorResumo.textContent = cortarTexto(wiki.resumo, 200);
+    el.autorLink.href = wiki.link;
+    el.autorLink.hidden = false;
+}
+
+// 4) A Wikipédia falhou: o jogo continua, o crachá fica só com o nome e a fonte
+export function autorIndisponivel() {
+    el.cracha.classList.remove("a-carregar");
+    el.autorResumo.textContent = "Resumo indisponível de momento.";
 }
 
 // ----- ecrã final -----

@@ -474,6 +474,11 @@ legend {
     color: var(--cor-cinza);
 }
 
+.cracha.a-carregar #autor-resumo {        /* enquanto a Wikipédia não responde: "A carregar…" em itálico cinzento */
+    font-style: italic;
+    color: var(--cor-cinza);
+}
+
 #botao-proxima {
     padding: var(--espaco);
     font-family: var(--letra-maquina);
