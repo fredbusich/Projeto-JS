@@ -3,7 +3,7 @@
 
 // No browser, o import precisa do "./" e da extensão ".js"
 import { carregarFrases, buscarAutor } from "./api.js";
-import { criarJogo } from "./jogo.js";
+import { criarJogo, filtrarRespostas } from "./jogo.js";
 import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
 import { criarTemporizador } from "./temporizador.js";
@@ -19,6 +19,7 @@ const musica = criarMusica("audio/tema.mp3");
 // Estado do módulo. Num módulo, estas variáveis NÃO são globais: não existem em window.
 let frases = [];
 let jogo = null;
+let ultimoResultado = null;                           // o resultado da última partida, para a lista de respostas
 
 // Um só temporizador para o jogo todo: a cada segundo atualiza o ecrã; ao chegar a 0, o tempo esgota
 const temporizador = criarTemporizador(TEMPO_RONDA, ui.mostrarTempo, tempoEsgotado);
@@ -88,6 +89,22 @@ function ligarEventos() {
     document.addEventListener("keydown", aoCarregarTecla);
 
     document.getElementById("botao-proxima").addEventListener("click", proximaRonda);
+
+    document.getElementById("botao-sair").addEventListener("click", sairDaPartida);
+
+    // Lista de respostas no fim: o botão abre e fecha
+    document.getElementById("botao-ver-respostas").addEventListener("click", () => {
+        ui.alternarRespostas(!ui.respostasVisiveis());
+    });
+
+    // Filtros da lista: cada botão tem data-filtro="todas", "certas" ou "erradas"
+    document.querySelectorAll(".filtro").forEach((botao) => {
+        botao.addEventListener("click", () => {
+            const filtro = botao.dataset.filtro;
+            ui.marcarFiltro(filtro, ultimoResultado.respostas);
+            ui.mostrarRespostas(filtrarRespostas(ultimoResultado.respostas, filtro));
+        });
+    });
 
     // Jogar de novo com o mesmo nome e modo (destructuring do estado)
     document.getElementById("botao-repetir").addEventListener("click", () => {
@@ -174,6 +191,19 @@ async function responder(valor) {
     }
 }
 
+// Sair a meio da partida: o relógio pára enquanto o jogador decide.
+// confirm() mostra uma janela do browser com "OK" e "Cancelar" e devolve true ou false.
+function sairDaPartida() {
+    temporizador.parar();
+    const querSair = confirm("Queres mesmo sair? A partida em curso não fica guardada.");
+
+    if (querSair) {
+        ui.mostrarEcra("inicio");                     // a partida é abandonada: não conta para os recordes
+    } else if (!jogo.estado().respondeu) {
+        temporizador.retomar();                       // desistiu de sair: o tempo continua de onde estava
+    }
+}
+
 // O temporizador chegou a 0: responder "nada" (null) conta como errada
 function tempoEsgotado() {
     responder(null);
@@ -195,7 +225,9 @@ function proximaRonda() {
     if (jogo.terminou()) {
         const resultado = jogo.resultado();
         const posicao = guardarRecorde(resultado);   // 1 a 5 se entrou no top, 0 se não
+        ultimoResultado = resultado;
         ui.mostrarFim(resultado, posicao);
+        ui.mostrarRespostas(filtrarRespostas(resultado.respostas, "todas"));   // a lista fica pronta, mas fechada
         ui.mostrarEcra("fim");
     } else {
         ui.mostrarRonda(jogo.estado(), responder);

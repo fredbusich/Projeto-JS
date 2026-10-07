@@ -29,6 +29,30 @@ export function tituloFinal(acertos) {
     }
 }
 
+// Filtra a lista de respostas do fim: "todas", "certas" ou "erradas".
+// Devolve sempre um array NOVO; o original não é alterado.
+export function filtrarRespostas(respostas, filtro) {
+    switch (filtro) {
+        case "certas":
+            return respostas.filter((resposta) => resposta.acertou);
+        case "erradas":
+            return respostas.filter((resposta) => !resposta.acertou);
+        case "todas":
+        default:
+            return [...respostas];
+    }
+}
+
+// Texto da resposta escolhida, para mostrar ao jogador.
+// No modo normal guarda-se o grupo ("dwight") e mostra-se "Dwight"; no difícil já é o nome; null = tempo esgotado.
+export function textoDaResposta(valor) {
+    if (valor === null) {
+        return "nada (tempo esgotado)";
+    }
+    const grupo = GRUPOS.find((opcao) => opcao.valor === valor);
+    return grupo ? grupo.texto : valor;
+}
+
 // Cria uma partida nova. Devolve um objeto só com FUNÇÕES: é a única forma de mexer no estado.
 export function criarJogo(frases, modo, nome) {
     // ----- estado privado: só as funções aqui dentro lhe chegam -----
@@ -102,7 +126,11 @@ export function criarJogo(frases, modo, nome) {
 
         pontos += ganhos;
         // Histórico sem push: um array NOVO com a resposta acrescentada no fim
-        historico = [...historico, { id: frase.id, grupo: frase.grupo, autor: frase.autor, acertou }];
+        // Guarda também o texto da frase e o que o jogador escolheu, para a lista do fim
+        historico = [
+            ...historico,
+            { id: frase.id, texto: frase.texto, grupo: frase.grupo, autor: frase.autor, resposta: valor, acertou },
+        ];
 
         return { acertou, certa, ganhos, frase: { ...frase } };
     }
@@ -149,6 +177,7 @@ export function criarJogo(frases, modo, nome) {
             percentagem: calcularPercentagem(acertos, historico.length),
             titulo: tituloFinal(acertos),
             porGrupo,
+            respostas: historico.map((resposta) => ({ ...resposta })),   // cópias: o histórico original fica protegido
         };
     }
 

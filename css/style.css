@@ -627,13 +627,85 @@ legend {
     margin-top: calc(var(--espaco) * 2);
 }
 
-#botao-voltar {                           /* botão secundário: branco com contorno azul */
+/* Botão secundário: branco com contorno azul. Uma classe, vários botões (Início, Ver as respostas, Sair) */
+.botao-secundario {
     color: var(--cor-azul);
     background: #fff;
 }
 
-#botao-voltar:hover {
+.botao-secundario:hover {
     background: var(--cor-azul-claro);
+}
+
+/* Botão "Sair" na barra de estado: mais pequeno, para não chamar a atenção */
+#botao-sair {
+    padding: calc(var(--espaco) * 0.25) calc(var(--espaco) * 0.75);
+    font-size: 0.85rem;
+}
+
+/* Lista das respostas no fim da partida */
+.lista-respostas {
+    margin-top: calc(var(--espaco) * 2);
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--espaco) * 0.5);
+}
+
+.filtro {                                 /* botões de filtro: em "pílula", brancos por defeito */
+    padding: calc(var(--espaco) * 0.25) var(--espaco);
+    font-size: 0.9rem;
+    color: var(--cor-azul);
+    background: #fff;
+    border-radius: 999px;                 /* raio enorme = pontas completamente redondas */
+}
+
+.filtro.ativo,
+.filtro.ativo:hover {                     /* o filtro escolhido fica azul cheio */
+    color: #fff;
+    background: var(--cor-azul);
+}
+
+#respostas {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--espaco) * 0.75);
+    list-style: none;
+}
+
+#respostas li {
+    padding: calc(var(--espaco) * 0.75) var(--espaco);
+    background: var(--branco-vidro);
+    border-left: 5px solid var(--cor-linha);  /* a cor da faixa diz se acertou ou errou */
+    border-radius: var(--raio);
+}
+
+#respostas li.certa {
+    border-left-color: var(--cor-verde);
+}
+
+#respostas li.errada {
+    border-left-color: var(--cor-vermelho);
+}
+
+.resposta-frase {
+    font-family: var(--letra-maquina);
+    font-style: italic;
+}
+
+.resposta-detalhe {
+    font-size: 0.9rem;
+    color: var(--cor-cinza);
+}
+
+.resposta-detalhe strong.certa {          /* "✓ Acertaste" a verde, "✗ Erraste" a vermelho */
+    color: var(--texto-verde);
+}
+
+.resposta-detalhe strong.errada {
+    color: var(--texto-vermelho);
 }
 
 /* ===== telemóvel ===== */
@@ -679,6 +751,10 @@ legend {
 
     .botoes-fim {
         flex-direction: column;           /* botões do fim um por cima do outro, à largura toda */
+    }
+
+    #botao-sair {
+        margin-left: auto;                /* quando a barra parte em duas linhas, o "Sair" fica encostado à direita */
     }
 
     .dica-teclas {

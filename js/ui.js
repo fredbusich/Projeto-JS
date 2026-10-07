@@ -1,7 +1,7 @@
 // ===== ui.js =====
 // Tudo o que mexe no ecrã. Recebe dados (do jogo.js) e mostra-os; não decide regras.
 
-import { GRUPOS } from "./jogo.js";
+import { GRUPOS, textoDaResposta } from "./jogo.js";
 import { calcularPercentagem, formatarData, formatarTempo } from "./utils.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
@@ -46,6 +46,10 @@ const el = {
     resultado: document.getElementById("resultado"),
     acertosPersonagem: document.getElementById("acertos-personagem"),
     novoRecorde: document.getElementById("novo-recorde"),
+    botaoVerRespostas: document.getElementById("botao-ver-respostas"),
+    listaRespostas: document.getElementById("lista-respostas"),
+    respostas: document.getElementById("respostas"),
+    filtros: document.querySelectorAll(".filtro"),
 };
 
 // ----- navegação -----
@@ -288,4 +292,68 @@ export function mostrarFim(resultado, posicao) {
 
     el.novoRecorde.textContent = `Novo recorde! ${posicao}.º lugar`;
     el.novoRecorde.hidden = posicao === 0;
+
+    // Cada partida começa com a lista de respostas fechada e no filtro "Todas"
+    alternarRespostas(false);
+    marcarFiltro("todas", resultado.respostas);
+}
+
+// ----- lista de respostas (ecrã final) -----
+
+// Abre ou fecha a lista. aria-expanded diz aos leitores de ecrã se está aberta.
+export function alternarRespostas(mostrar) {
+    el.listaRespostas.hidden = !mostrar;
+    el.botaoVerRespostas.textContent = mostrar ? "Esconder as respostas" : "Ver as respostas";
+    el.botaoVerRespostas.setAttribute("aria-expanded", mostrar);
+}
+
+export function respostasVisiveis() {
+    return !el.listaRespostas.hidden;
+}
+
+// Pinta o filtro escolhido e escreve quantas respostas há em cada um: "Certas (7)"
+export function marcarFiltro(filtro, respostas) {
+    const certas = respostas.filter((resposta) => resposta.acertou).length;
+    const contagens = { todas: respostas.length, certas, erradas: respostas.length - certas };
+    const nomes = { todas: "Todas", certas: "Certas", erradas: "Erradas" };
+
+    el.filtros.forEach((botao) => {
+        const chave = botao.dataset.filtro;
+        botao.textContent = `${nomes[chave]} (${contagens[chave]})`;
+        botao.classList.toggle("ativo", chave === filtro);
+    });
+}
+
+// Uma linha por resposta: a frase, quem a disse, o que o jogador escolheu e se acertou
+export function mostrarRespostas(respostas) {
+    el.respostas.innerHTML = "";
+
+    if (respostas.length === 0) {
+        const vazio = document.createElement("li");
+        vazio.textContent = "Nenhuma resposta neste filtro.";
+        el.respostas.appendChild(vazio);
+        return;
+    }
+
+    respostas.forEach((resposta) => {
+        const li = document.createElement("li");
+        li.className = resposta.acertou ? "certa" : "errada";
+
+        const frase = document.createElement("p");
+        frase.className = "resposta-frase";
+        frase.textContent = `«${resposta.texto}»`;
+
+        const detalhe = document.createElement("p");
+        detalhe.className = "resposta-detalhe";
+
+        const estado = document.createElement("strong");
+        estado.className = resposta.acertou ? "certa" : "errada";
+        estado.textContent = resposta.acertou ? "✓ Acertaste" : "✗ Erraste";
+
+        // O resto é texto simples: append aceita elementos e texto misturados
+        detalhe.append(estado, ` · Foi ${resposta.autor} · Respondeste: ${textoDaResposta(resposta.resposta)}`);
+
+        li.append(frase, detalhe);
+        el.respostas.appendChild(li);
+    });
 }

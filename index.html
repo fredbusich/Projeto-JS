@@ -68,6 +68,7 @@
                 <h2 id="ronda">Ronda 1 de 10</h2>
                 <p>Pontos: <span id="pontos">0</span></p>
                 <p>Tempo: <span id="tempo">00:15</span></p>
+                <button id="botao-sair" type="button" class="botao-secundario">Sair</button>
             </div>
 
             <div class="grelha">
@@ -128,7 +129,19 @@
 
             <div class="botoes-fim">
                 <button id="botao-repetir" type="button">Jogar de novo</button>
-                <button id="botao-voltar" type="button">Início</button>
+                <button id="botao-ver-respostas" type="button" class="botao-secundario" aria-expanded="false" aria-controls="lista-respostas">Ver as respostas</button>
+                <button id="botao-voltar" type="button" class="botao-secundario">Início</button>
+            </div>
+
+            <!-- Lista das respostas da partida (os <li> e as contagens são criados pelo JS) -->
+            <div id="lista-respostas" class="cartao lista-respostas" hidden>
+                <h3>As tuas respostas</h3>
+                <div class="filtros" role="group" aria-label="Filtrar respostas">
+                    <button type="button" class="filtro ativo" data-filtro="todas">Todas</button>
+                    <button type="button" class="filtro" data-filtro="certas">Certas</button>
+                    <button type="button" class="filtro" data-filtro="erradas">Erradas</button>
+                </div>
+                <ol id="respostas"></ol>
             </div>
         </section>
     </main>
