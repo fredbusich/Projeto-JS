@@ -489,6 +489,7 @@ legend {
     min-height: 1.5em;                    /* espaço reservado, como no .erro do formulário */
     font-size: 1.1rem;
     font-weight: 700;
+    scroll-margin-top: var(--espaco);     /* no telemóvel, o scroll pára 16px acima: não fica colado ao topo */
 }
 
 .feedback.certa {
