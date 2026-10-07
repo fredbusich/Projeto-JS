@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Jogo: adivinha quem disse a frase — Michael Scott, Dwight Schrute ou um filósofo?">
     <title>That's What Who Said?</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -34,8 +35,13 @@
                     <p data-texto="regras2">Filósofos em jogo: Sócrates, Nietzsche, Confúcio, Marco Aurélio e Sun Tzu.</p>
 
                     <form id="form-inicio" novalidate>
-                        <label for="nome"><span data-texto="oTeuNome">O teu nome</span> <span id="contador-nome" class="contador">0/15</span></label>
-                        <input id="nome" type="text" name="nome" maxlength="15" data-texto-placeholder="exemploNome" placeholder="Ex: Pam Beesly">
+                        <!-- O contador fica FORA do label: assim o nome do campo é só "O teu nome".
+                             aria-describedby liga o contador e o erro ao campo, como informação extra. -->
+                        <div class="campo-cabecalho">
+                            <label for="nome" data-texto="oTeuNome">O teu nome</label>
+                            <span id="contador-nome" class="contador">0/15</span>
+                        </div>
+                        <input id="nome" type="text" name="nome" maxlength="15" aria-describedby="contador-nome erro-nome" data-texto-placeholder="exemploNome" placeholder="Ex: Pam Beesly">
                         <p id="erro-nome" class="erro" aria-live="polite"></p>
 
                         <fieldset>
@@ -52,7 +58,8 @@
                             </label>
                         </fieldset>
 
-                        <button type="submit" data-texto="jogar">Jogar</button>
+                        <!-- Começa desativado: só fica ativo quando as frases chegarem (fetch) -->
+                        <button type="submit" data-texto="jogar" disabled>Jogar</button>
                     </form>
                 </div>
 
@@ -81,7 +88,8 @@
                     <p><strong data-texto="para">Para:</strong> <span id="memo-para">Jogador</span></p>
                     <p><strong data-texto="assunto">Assunto:</strong> <span data-texto="quemDisseIsto">Quem disse isto?</span></p>
 
-                    <blockquote id="frase">
+                    <!-- tabindex="-1": o JS pode pôr o foco aqui (cada ronda nova), mas o Tab não para aqui -->
+                    <blockquote id="frase" tabindex="-1">
                         <p id="texto-frase">A frase aparece aqui.</p>
                     </blockquote>
 
@@ -144,9 +152,10 @@
             <div id="lista-respostas" class="cartao lista-respostas" hidden>
                 <h3 data-texto="asTuasRespostas">As tuas respostas</h3>
                 <div class="filtros" role="group" data-texto-aria="filtrarRespostas" aria-label="Filtrar respostas">
-                    <button type="button" class="filtro ativo" data-filtro="todas">Todas</button>
-                    <button type="button" class="filtro" data-filtro="certas">Certas</button>
-                    <button type="button" class="filtro" data-filtro="erradas">Erradas</button>
+                    <!-- aria-pressed diz aos leitores de ecrã qual é o filtro ativo (a cor não chega) -->
+                    <button type="button" class="filtro ativo" data-filtro="todas" aria-pressed="true">Todas</button>
+                    <button type="button" class="filtro" data-filtro="certas" aria-pressed="false">Certas</button>
+                    <button type="button" class="filtro" data-filtro="erradas" aria-pressed="false">Erradas</button>
                 </div>
                 <ol id="respostas"></ol>
             </div>

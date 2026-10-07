@@ -28,6 +28,8 @@ const el = {
     contadorNome: document.getElementById("contador-nome"),
     erroNome: document.getElementById("erro-nome"),
     botaoJogar: document.querySelector("#form-inicio button[type='submit']"),
+    botaoRepetir: document.getElementById("botao-repetir"),
+    frase: document.getElementById("frase"),
     cartoesModo: document.querySelectorAll(".cartao-modo"),
     recordesModo: document.getElementById("recordes-modo"),
     listaRecordes: document.getElementById("lista-recordes"),
@@ -178,16 +180,20 @@ export function mostrarVolume(valor) {
     el.volume.value = valor;
 }
 
-// Se as frases não carregarem, o jogo não pode começar
+// Enquanto as frases estão a chegar, nada que comece uma partida (ou mude a língua) pode ser clicado.
+// Sem isto, numa rede lenta, "Jogar" arrancava com zero frases ("Ronda 1 de 0").
+export function bloquearEnquantoCarrega(aCarregar) {
+    el.botaoJogar.disabled = aCarregar;
+    el.botaoRepetir.disabled = aCarregar;
+    el.botaoIdioma.disabled = aCarregar;
+}
+
+// Se as frases não carregarem, o jogo não pode começar: os botões ficam bloqueados e aparece o aviso
 export function mostrarErroCarregamento() {
     el.erroNome.textContent = t("erroFrases");
     el.botaoJogar.disabled = true;
-}
-
-// As frases carregaram (outra vez): o jogo pode começar
-export function limparErroCarregamento() {
-    el.erroNome.textContent = "";
-    el.botaoJogar.disabled = false;
+    el.botaoRepetir.disabled = true;
+    el.botaoIdioma.disabled = false;                  // a outra língua pode carregar: deixa tentar
 }
 
 // ----- ecrã do jogo -----
@@ -215,6 +221,11 @@ export function mostrarRonda(estado, aoResponder) {
     el.feedback.className = "feedback";
     el.botaoProxima.hidden = true;
     esconderAutor();
+
+    // O botão "Próxima" que tinha o foco acabou de desaparecer: sem isto, o foco "caía" no <body>.
+    // Pô-lo na frase faz o leitor de ecrã lê-la; com o teclado, o Tab segue logo para as respostas.
+    // preventScroll: não faz a página saltar (no telemóvel, a frase pode já estar fora do ecrã).
+    el.frase.focus({ preventScroll: true });
 }
 
 // Mostra o resultado da resposta: cores nos botões, mensagem e botão "Próxima"
@@ -360,6 +371,7 @@ export function marcarFiltro(filtro, respostas) {
         const chave = botao.dataset.filtro;
         botao.textContent = t(`filtro_${chave}`, { n: contagens[chave] });
         botao.classList.toggle("ativo", chave === filtro);
+        botao.setAttribute("aria-pressed", chave === filtro);   // "true" só no filtro escolhido
     });
 }
 

@@ -262,9 +262,10 @@ legend {
     font-weight: 700;
 }
 
-label[for="nome"] {
+.campo-cabecalho {
     display: flex;
     justify-content: space-between;       /* "O teu nome" à esquerda, contador "7/15" à direita */
+    align-items: baseline;                /* os dois textos alinhados pela base das letras */
 }
 
 .contador {
@@ -424,6 +425,10 @@ legend {
     padding: calc(var(--espaco) * 1.5) 0;
     border-top: 2px solid var(--cor-linha);       /* a frase fica entre duas linhas, */
     border-bottom: 2px solid var(--cor-linha);    /* como o corpo de um memorando */
+}
+
+#frase:focus {                            /* o foco é posto pelo JS para o leitor de ecrã ler a frase nova; */
+    outline: none;                        /* não é um elemento clicável, por isso não precisa do contorno */
 }
 
 #texto-frase {

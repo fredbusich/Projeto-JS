@@ -22,6 +22,7 @@ let frases = [];
 let jogo = null;
 let ultimoResultado = null;                           // o resultado da última partida, para a lista de respostas
 let ultimaPosicao = 0;                                // o lugar no top 5 da última partida (0 = sem recorde)
+let aCarregarFrases = false;                          // booleano: true enquanto o fetch das frases não termina
 
 // Um só temporizador para o jogo todo: a cada segundo atualiza o ecrã; ao chegar a 0, o tempo esgota
 const temporizador = criarTemporizador(TEMPO_RONDA, ui.mostrarTempo, tempoEsgotado);
@@ -43,13 +44,20 @@ async function iniciar() {
     await carregarFrasesDoIdioma();
 }
 
-// Carrega as frases da língua atual; se falhar, avisa e bloqueia o botão "Jogar"
+// Carrega as frases da língua atual. Enquanto chegam, "Jogar", "Jogar de novo" e a língua ficam bloqueados.
+// Se falhar, avisa e "Jogar" continua bloqueado.
 async function carregarFrasesDoIdioma() {
+    aCarregarFrases = true;
+    ui.bloquearEnquantoCarrega(true);
     try {
         frases = await carregarFrases(idiomaAtual());
-        ui.limparErroCarregamento();
+        ui.mostrarErroNome("");                       // apaga um aviso de erro de uma tentativa anterior
+        ui.bloquearEnquantoCarrega(false);
     } catch (erro) {
+        frases = [];
         ui.mostrarErroCarregamento();
+    } finally {
+        aCarregarFrases = false;                      // finally corre sempre: com sucesso ou com erro
     }
 }
 
@@ -62,7 +70,9 @@ function ligarEventos() {
     // "input" dispara a cada letra: contador em tempo real e o erro desaparece enquanto se escreve
     campoNome.addEventListener("input", () => {
         ui.atualizarContador(campoNome.value.length, MAX_NOME);
-        ui.mostrarErroNome("");
+        if (frases.length > 0) {
+            ui.mostrarErroNome("");                   // não apaga o aviso de "frases não carregadas"
+        }
     });
 
     // "change" dispara quando se escolhe outro modo: pinta o cartão, guarda a escolha e mostra os recordes desse modo
@@ -148,7 +158,8 @@ async function trocarIdioma() {
     await carregarFrasesDoIdioma();
 
     // No ecrã final, volta a desenhar o resultado: o título e a lista também mudam de língua
-    if (ui.ecraAtual() === "fim" && jogo !== null) {
+    // (só se as frases novas chegaram: a lista precisa delas para mostrar os textos)
+    if (ui.ecraAtual() === "fim" && jogo !== null && frases.length > 0) {
         ultimoResultado = jogo.resultado();          // o título final é calculado de novo, já na língua nova
         ui.mostrarFim(ultimoResultado, ultimaPosicao);
         ui.alternarRespostas(ui.respostasVisiveis()); // mantém aberta/fechada, mas traduz o texto do botão
@@ -166,6 +177,11 @@ function aoSubmeter(evento) {
 
     if (!validacao.valido) {
         ui.mostrarErroNome(validacao.erro);           // a chave do erro: o ui.js traduz
+        return;
+    }
+
+    // Segunda proteção (a primeira é o botão desativado): sem frases, ou com as frases a mudar de língua, não há partida
+    if (aCarregarFrases || frases.length === 0) {
         return;
     }
 
@@ -198,6 +214,9 @@ function aoCarregarTecla(evento) {
 }
 
 function comecarPartida(nome, modo) {
+    if (aCarregarFrases || frases.length === 0) {
+        return;                                       // também protege o "Jogar de novo"
+    }
     jogo = criarJogo(frases, modo, nome);
     ui.mostrarEcra("jogo");
     ui.mostrarRonda(jogo.estado(), responder);       // responder é passada como callback
@@ -256,7 +275,10 @@ function aindaNaMesmaRonda(idFrase) {
 }
 
 function proximaRonda() {
-    jogo.avancar();
+    // avancar() devolve false se ainda não se respondeu: nesse caso não há nada a fazer
+    if (!jogo.avancar()) {
+        return;
+    }
 
     if (jogo.terminou()) {
         ultimoResultado = jogo.resultado();

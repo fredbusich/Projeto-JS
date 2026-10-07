@@ -6,6 +6,7 @@ export function criarMusica(caminho) {
     const audio = new Audio(caminho);
     audio.loop = true;                                // quando acaba, recomeça
     audio.volume = 0.3;                               // 30%: música de fundo, não pode tapar o jogo
+    audio.preload = "none";                           // só descarrega o ficheiro (755 KB) quando tocar pela 1.ª vez
 
     // play() devolve uma Promise: é rejeitada se o browser bloquear o som
     // (nenhum site pode tocar som antes de o utilizador clicar em alguma coisa)
