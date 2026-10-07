@@ -210,11 +210,31 @@ input:focus-visible {                     /* também apanha o slider do volume *
     background: var(--cor-papel);
 }
 
-/* Volume e botão de som lado a lado, no cabeçalho */
-.controlo-som {
+/* Língua, volume e som lado a lado, no cabeçalho */
+.controlos {
     display: flex;
     align-items: center;
     gap: calc(var(--espaco) * 0.75);
+}
+
+/* Botão da língua: "pílula" branca com o código da outra língua (EN ou PT) */
+.botao-idioma {
+    height: 44px;                         /* a mesma altura do botão de som */
+    padding: 0 var(--espaco);
+    color: var(--cor-azul);
+    background: #fff;
+    border-color: #fff;
+    border-radius: 22px;                  /* metade da altura: pontas redondas */
+}
+
+.botao-idioma:hover {
+    background: var(--cor-papel);
+    border-color: var(--cor-papel);
+}
+
+.botao-idioma:disabled {                  /* durante a partida não se pode mudar de língua */
+    opacity: 0.4;
+    cursor: not-allowed;                  /* o cursor de "proibido" explica porquê */
 }
 
 #volume {
@@ -719,7 +739,7 @@ legend {
     }
 
     #volume {
-        width: 70px;                      /* slider mais curto para caber ao lado do título */
+        display: none;                    /* no telemóvel usa-se o volume do aparelho: o slider não cabe */
     }
 
     .grelha {

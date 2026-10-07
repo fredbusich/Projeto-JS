@@ -1,14 +1,17 @@
 // ===== ui.js =====
 // Tudo o que mexe no ecrã. Recebe dados (do jogo.js) e mostra-os; não decide regras.
+// Nenhum texto está escrito aqui: vem todo do dicionário, com t("chave").
 
 import { GRUPOS, textoDaResposta } from "./jogo.js";
 import { calcularPercentagem, formatarData, formatarTempo } from "./utils.js";
+import { t } from "./idioma.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
 
-// Fotos guardadas no projeto, que substituem as da Wikipédia (que mostra o ator, não a personagem)
+// Fotos guardadas no projeto, que substituem as da Wikipédia (que mostra o ator, não a personagem).
+// A chave é a "pessoa", que é igual nas duas línguas.
 const FOTOS_LOCAIS = {
-    "Dwight Schrute": "img/dwight.jpg",
+    dwight: "img/dwight.jpg",
 };
 
 // Os elementos da página, procurados UMA vez e guardados num objeto
@@ -18,6 +21,7 @@ const el = {
         jogo: document.getElementById("ecra-jogo"),
         fim: document.getElementById("ecra-fim"),
     },
+    botaoIdioma: document.getElementById("botao-idioma"),
     botaoSom: document.getElementById("botao-som"),
     volume: document.getElementById("volume"),
     nome: document.getElementById("nome"),
@@ -52,6 +56,24 @@ const el = {
     filtros: document.querySelectorAll(".filtro"),
 };
 
+// ----- língua -----
+
+// Põe na página os textos fixos da língua atual.
+// Procura os elementos marcados no HTML com data-texto, data-texto-placeholder e data-texto-aria.
+export function aplicarTextos() {
+    document.documentElement.lang = t("lang");       // <html lang="en">: os leitores de ecrã mudam a pronúncia
+
+    document.querySelectorAll("[data-texto]").forEach((elemento) => {
+        elemento.textContent = t(elemento.dataset.texto);
+    });
+    document.querySelectorAll("[data-texto-placeholder]").forEach((elemento) => {
+        elemento.placeholder = t(elemento.dataset.textoPlaceholder);   // data-texto-placeholder → dataset.textoPlaceholder
+    });
+    document.querySelectorAll("[data-texto-aria]").forEach((elemento) => {
+        elemento.setAttribute("aria-label", t(elemento.dataset.textoAria));
+    });
+}
+
 // ----- navegação -----
 
 // Mostra um ecrã e esconde os outros: "inicio", "jogo" ou "fim"
@@ -59,7 +81,17 @@ export function mostrarEcra(nome) {
     for (const chave in el.ecras) {
         el.ecras[chave].hidden = chave !== nome;      // true esconde, false mostra
     }
+    el.botaoIdioma.disabled = nome === "jogo";        // a língua não muda a meio de uma partida
     window.scrollTo(0, 0);                            // cada ecrã começa no topo
+}
+
+export function ecraAtual() {
+    for (const chave in el.ecras) {
+        if (!el.ecras[chave].hidden) {
+            return chave;
+        }
+    }
+    return "inicio";
 }
 
 // ----- ecrã de início -----
@@ -76,8 +108,9 @@ export function atualizarContador(tamanho, maximo) {
     el.contadorNome.textContent = `${tamanho}/${maximo}`;
 }
 
-export function mostrarErroNome(mensagem) {
-    el.erroNome.textContent = mensagem;
+// Recebe a CHAVE do erro (ex.: "nomeCurto") e mostra o texto na língua atual; "" apaga o erro
+export function mostrarErroNome(chave) {
+    el.erroNome.textContent = chave ? t(chave) : "";
 }
 
 // Pinta o cartão do modo escolhido com a classe .selecionado
@@ -99,13 +132,13 @@ export function definirModo(modo) {
 
 // Lista do top 5 no post-it, ou a mensagem de "ainda não há recordes"
 export function mostrarRecordes(recordes, modo) {
-    el.recordesModo.textContent = modo === "dificil" ? "Modo difícil" : "Modo normal";
+    el.recordesModo.textContent = modo === "dificil" ? t("recordesDificil") : t("recordesNormal");
     el.listaRecordes.innerHTML = "";
 
     if (recordes.length === 0) {
         const vazio = document.createElement("li");
         vazio.className = "sem-recordes";
-        vazio.textContent = "Ainda não há recordes. Sê o primeiro!";
+        vazio.textContent = t("semRecordes");
         el.listaRecordes.appendChild(vazio);
         return;
     }
@@ -126,7 +159,7 @@ export function mostrarRecordes(recordes, modo) {
 
         const data = document.createElement("span");
         data.className = "recorde-data";
-        data.textContent = formatarData(recorde.data);
+        data.textContent = formatarData(recorde.data, t("locale"));
 
         li.append(posicao, nome, pontos, data);
         el.listaRecordes.appendChild(li);
@@ -136,7 +169,7 @@ export function mostrarRecordes(recordes, modo) {
 // Botão de som: o ícone e o aria-label dizem o que o clique vai fazer
 export function mostrarSom(ligado) {
     el.botaoSom.textContent = ligado ? "🔊" : "🔇";
-    el.botaoSom.setAttribute("aria-label", ligado ? "Desligar som" : "Ligar som");
+    el.botaoSom.setAttribute("aria-label", ligado ? t("desligarSom") : t("ligarSom"));
     el.volume.disabled = !ligado;                     // som desligado: o volume não faz sentido
 }
 
@@ -146,19 +179,25 @@ export function mostrarVolume(valor) {
 }
 
 // Se as frases não carregarem, o jogo não pode começar
-export function mostrarErroCarregamento(mensagem) {
-    el.erroNome.textContent = mensagem;
+export function mostrarErroCarregamento() {
+    el.erroNome.textContent = t("erroFrases");
     el.botaoJogar.disabled = true;
+}
+
+// As frases carregaram (outra vez): o jogo pode começar
+export function limparErroCarregamento() {
+    el.erroNome.textContent = "";
+    el.botaoJogar.disabled = false;
 }
 
 // ----- ecrã do jogo -----
 
 // Desenha uma ronda nova. "aoResponder" é a função que o main.js quer chamar no clique.
 export function mostrarRonda(estado, aoResponder) {
-    el.ronda.textContent = `Ronda ${estado.ronda} de ${estado.total}`;
+    el.ronda.textContent = t("ronda", { ronda: estado.ronda, total: estado.total });
     el.pontos.textContent = estado.pontos;
     el.memoPara.textContent = estado.nome;
-    el.textoFrase.textContent = `«${estado.frase.texto}»`;
+    el.textoFrase.textContent = `${t("aspaAbre")}${estado.frase.texto}${t("aspaFecha")}`;   // «…» ou “…”
 
     // Botões de resposta: apaga os da ronda anterior e cria os novos
     el.opcoes.innerHTML = "";
@@ -193,19 +232,20 @@ export function mostrarResposta(resposta, escolhido, estado) {
     });
 
     // Três mensagens possíveis: acertou, o tempo acabou (escolhido = null) ou errou
+    const autor = resposta.frase.autor;
     if (resposta.acertou) {
-        el.feedback.textContent = `Certo! Foi ${resposta.frase.autor}. +${resposta.ganhos} pontos`;
+        el.feedback.textContent = t("certo", { autor, pontos: resposta.ganhos });
     } else if (escolhido === null) {
-        el.feedback.textContent = `Tempo esgotado! Foi ${resposta.frase.autor}.`;
+        el.feedback.textContent = t("tempoEsgotado", { autor });
     } else {
-        el.feedback.textContent = `Errado! Foi ${resposta.frase.autor}.`;
+        el.feedback.textContent = t("errado", { autor });
     }
     el.feedback.classList.add(resposta.acertou ? "certa" : "errada");   // ternário escolhe a classe
 
     el.pontos.textContent = estado.pontos;
 
     // Na última ronda, o botão leva ao resultado
-    el.botaoProxima.textContent = estado.ronda === estado.total ? "Ver resultado →" : "Próxima →";
+    el.botaoProxima.textContent = estado.ronda === estado.total ? t("verResultado") : t("proxima");
     el.botaoProxima.hidden = false;
     el.botaoProxima.focus();                          // quem joga com o teclado carrega logo em Enter
 }
@@ -217,29 +257,29 @@ export function mostrarTempo(segundos) {
 }
 
 // O crachá tem 3 estados, cada um com a sua função:
-// por revelar → revelado (dados do frases.json) → completo (foto e link da Wikipédia)
+// por revelar → revelado (dados das frases) → completo (foto e link da Wikipédia)
 
 // 1) Antes de responder: silhueta e "Funcionário por identificar"
 export function esconderAutor() {
     el.cracha.classList.add("por-revelar");
     el.autorFoto.src = SEM_FOTO;
     el.autorFoto.alt = "";
-    el.autorNome.textContent = "Funcionário por identificar";
-    el.autorNota.textContent = "Responde para descobrir.";
+    el.autorNome.textContent = t("porIdentificar");
+    el.autorNota.textContent = t("respondeParaDescobrir");
     el.autorFonte.textContent = "";
     el.autorLink.hidden = true;
 }
 
-// 2) Logo a seguir à resposta: tudo o que vem do frases.json aparece já (nome, nota cómica, fonte).
+// 2) Logo a seguir à resposta: tudo o que vem das frases aparece já (nome, nota cómica, fonte).
 //    Se houver foto local, também; senão, a silhueta fica até a Wikipédia responder.
 export function revelarAutor(frase) {
     el.cracha.classList.remove("por-revelar");
     el.autorNome.textContent = frase.autor;
     el.autorNota.textContent = frase.nota;
-    el.autorFonte.textContent = `Fonte: ${frase.fonte}`;
+    el.autorFonte.textContent = t("fonte", { fonte: frase.fonte });
     el.autorFoto.alt = frase.autor;
 
-    const fotoLocal = FOTOS_LOCAIS[frase.autor];      // undefined se o autor não estiver no objeto
+    const fotoLocal = FOTOS_LOCAIS[frase.pessoa];     // undefined se a pessoa não estiver no objeto
     if (fotoLocal) {
         el.autorFoto.src = fotoLocal;
     }
@@ -247,7 +287,7 @@ export function revelarAutor(frase) {
 
 // 3) A Wikipédia respondeu: a foto (se não houver uma local) e o link
 export function completarAutor(frase, wiki) {
-    if (!FOTOS_LOCAIS[frase.autor]) {
+    if (!FOTOS_LOCAIS[frase.pessoa]) {
         el.autorFoto.src = wiki.foto || SEM_FOTO;     // sem foto em lado nenhum: fica a silhueta
     }
     el.autorLink.href = wiki.link;
@@ -260,13 +300,17 @@ export function completarAutor(frase, wiki) {
 export function mostrarFim(resultado, posicao) {
     el.fimNome.textContent = resultado.nome;
     el.tituloFinal.textContent = resultado.titulo;
-    el.resultado.textContent =
-        `${resultado.acertos} de ${resultado.total} acertos · ${resultado.percentagem}% · ${resultado.pontos} pontos`;
+    el.resultado.textContent = t("resultado", {
+        acertos: resultado.acertos,
+        total: resultado.total,
+        percentagem: resultado.percentagem,
+        pontos: resultado.pontos,
+    });
 
     // Uma linha por grupo: nome, "3/4" e a barra
     el.acertosPersonagem.innerHTML = "";
     GRUPOS.forEach((grupo) => {
-        const dados = resultado.porGrupo[grupo.valor];
+        const dados = resultado.porGrupo[grupo];
         if (!dados) {
             return;                                   // este grupo não saiu nesta partida
         }
@@ -274,7 +318,7 @@ export function mostrarFim(resultado, posicao) {
         const li = document.createElement("li");
 
         const nome = document.createElement("span");
-        nome.textContent = grupo.texto;
+        nome.textContent = t(`grupo_${grupo}`);
 
         const contagem = document.createElement("span");
         contagem.textContent = `${dados.acertos}/${dados.total}`;
@@ -290,12 +334,8 @@ export function mostrarFim(resultado, posicao) {
         el.acertosPersonagem.appendChild(li);
     });
 
-    el.novoRecorde.textContent = `Novo recorde! ${posicao}.º lugar`;
+    el.novoRecorde.textContent = t("novoRecorde", { posicao });
     el.novoRecorde.hidden = posicao === 0;
-
-    // Cada partida começa com a lista de respostas fechada e no filtro "Todas"
-    alternarRespostas(false);
-    marcarFiltro("todas", resultado.respostas);
 }
 
 // ----- lista de respostas (ecrã final) -----
@@ -303,7 +343,7 @@ export function mostrarFim(resultado, posicao) {
 // Abre ou fecha a lista. aria-expanded diz aos leitores de ecrã se está aberta.
 export function alternarRespostas(mostrar) {
     el.listaRespostas.hidden = !mostrar;
-    el.botaoVerRespostas.textContent = mostrar ? "Esconder as respostas" : "Ver as respostas";
+    el.botaoVerRespostas.textContent = mostrar ? t("esconderRespostas") : t("verRespostas");
     el.botaoVerRespostas.setAttribute("aria-expanded", mostrar);
 }
 
@@ -315,43 +355,54 @@ export function respostasVisiveis() {
 export function marcarFiltro(filtro, respostas) {
     const certas = respostas.filter((resposta) => resposta.acertou).length;
     const contagens = { todas: respostas.length, certas, erradas: respostas.length - certas };
-    const nomes = { todas: "Todas", certas: "Certas", erradas: "Erradas" };
 
     el.filtros.forEach((botao) => {
         const chave = botao.dataset.filtro;
-        botao.textContent = `${nomes[chave]} (${contagens[chave]})`;
+        botao.textContent = t(`filtro_${chave}`, { n: contagens[chave] });
         botao.classList.toggle("ativo", chave === filtro);
     });
 }
 
-// Uma linha por resposta: a frase, quem a disse, o que o jogador escolheu e se acertou
-export function mostrarRespostas(respostas) {
+// Qual é o filtro que está ativo agora ("todas", "certas" ou "erradas")
+export function filtroAtivo() {
+    const ativo = document.querySelector(".filtro.ativo");
+    return ativo ? ativo.dataset.filtro : "todas";
+}
+
+// Uma linha por resposta: a frase, quem a disse, o que o jogador escolheu e se acertou.
+// O texto e o nome vêm das frases carregadas (procuradas pelo id), por isso aparecem na língua atual.
+export function mostrarRespostas(respostas, frases, modo) {
     el.respostas.innerHTML = "";
 
     if (respostas.length === 0) {
         const vazio = document.createElement("li");
-        vazio.textContent = "Nenhuma resposta neste filtro.";
+        vazio.textContent = t("semRespostasNoFiltro");
         el.respostas.appendChild(vazio);
         return;
     }
 
     respostas.forEach((resposta) => {
+        const dadosFrase = frases.find((frase) => frase.id === resposta.id);
+
         const li = document.createElement("li");
         li.className = resposta.acertou ? "certa" : "errada";
 
         const frase = document.createElement("p");
         frase.className = "resposta-frase";
-        frase.textContent = `«${resposta.texto}»`;
+        frase.textContent = `${t("aspaAbre")}${dadosFrase.texto}${t("aspaFecha")}`;
 
         const detalhe = document.createElement("p");
         detalhe.className = "resposta-detalhe";
 
         const estado = document.createElement("strong");
         estado.className = resposta.acertou ? "certa" : "errada";
-        estado.textContent = resposta.acertou ? "✓ Acertaste" : "✗ Erraste";
+        estado.textContent = resposta.acertou ? t("acertaste") : t("erraste");
 
         // O resto é texto simples: append aceita elementos e texto misturados
-        detalhe.append(estado, ` · Foi ${resposta.autor} · Respondeste: ${textoDaResposta(resposta.resposta)}`);
+        detalhe.append(estado, t("detalheResposta", {
+            autor: dadosFrase.autor,
+            resposta: textoDaResposta(resposta.resposta, frases, modo),
+        }));
 
         li.append(frase, detalhe);
         el.respostas.appendChild(li);

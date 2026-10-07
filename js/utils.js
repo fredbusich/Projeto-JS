@@ -27,18 +27,20 @@ export function formatarNome(texto) {
         .join(" ");                                     // volta a juntar com um só espaço
 }
 
-// Valida o nome e devolve um objeto: { valido: true/false, erro: "mensagem" }.
+// Valida o nome e devolve um objeto: { valido: true/false, erro: "chave" }.
+// Devolve a CHAVE do erro ("nomeCurto"), não o texto: quem mostra o erro traduz com t(chave).
+// Assim esta função continua pura e não precisa de saber em que língua está o jogo.
 export function validarNome(texto) {
     const nome = texto.trim();
 
     if (nome === "") {
-        return { valido: false, erro: "Escreve o teu nome para começar." };
+        return { valido: false, erro: "nomeVazio" };
     }
     if (nome.length < 2) {
-        return { valido: false, erro: "O nome tem de ter pelo menos 2 letras." };
+        return { valido: false, erro: "nomeCurto" };
     }
     if (nome.length > 15) {
-        return { valido: false, erro: "O nome pode ter no máximo 15 letras." };
+        return { valido: false, erro: "nomeLongo" };
     }
 
     return { valido: true, erro: "" };
@@ -61,7 +63,8 @@ export function calcularPercentagem(parte, total) {
     return Math.round((parte / total) * 100);
 }
 
-// Data guardada (texto ISO) → data portuguesa. "2026-10-02T09:30:00.000Z" → "02/10/2026"
-export function formatarData(dataISO) {
-    return new Date(dataISO).toLocaleDateString("pt-PT");
+// Data guardada (texto ISO) → data no formato da língua.
+// "2026-10-02T09:30:00.000Z" → "02/10/2026" (pt-PT) ou "10/2/2026" (en-US)
+export function formatarData(dataISO, locale = "pt-PT") {
+    return new Date(dataISO).toLocaleDateString(locale);
 }
