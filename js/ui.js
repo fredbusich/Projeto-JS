@@ -8,6 +8,16 @@ import { t } from "./idioma.js";
 
 const SEM_FOTO = "img/sem-foto.svg";
 
+// matchMedia: a mesma pergunta que uma media query do CSS, mas feita em JavaScript.
+// No telemóvel (uma coluna só), o feedback e o botão "Próxima" ficam abaixo das opções.
+const TELEMOVEL = window.matchMedia("(max-width: 767px)");
+// Quem desativou as animações no sistema recebe um salto direto, sem deslizar
+const MOVIMENTO_REDUZIDO = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function tipoDeScroll() {
+    return MOVIMENTO_REDUZIDO.matches ? "auto" : "smooth";
+}
+
 // Fotos guardadas no projeto, que substituem as da Wikipédia (que mostra o ator, não a personagem).
 // A chave é a "pessoa", que é igual nas duas línguas.
 const FOTOS_LOCAIS = {
@@ -222,9 +232,15 @@ export function mostrarRonda(estado, aoResponder) {
     el.botaoProxima.hidden = true;
     esconderAutor();
 
+    // No telemóvel, a página estava lá em baixo (no botão "Próxima"): volta ao topo para mostrar
+    // a ronda, o tempo e a frase completa. No computador está tudo à vista e não mexe.
+    if (TELEMOVEL.matches) {
+        window.scrollTo({ top: 0, behavior: tipoDeScroll() });
+    }
+
     // O botão "Próxima" que tinha o foco acabou de desaparecer: sem isto, o foco "caía" no <body>.
     // Pô-lo na frase faz o leitor de ecrã lê-la; com o teclado, o Tab segue logo para as respostas.
-    // preventScroll: não faz a página saltar (no telemóvel, a frase pode já estar fora do ecrã).
+    // preventScroll: o foco não mexe na página (o scroll é tratado acima).
     el.frase.focus({ preventScroll: true });
 }
 
@@ -258,7 +274,12 @@ export function mostrarResposta(resposta, escolhido, estado) {
     // Na última ronda, o botão leva ao resultado
     el.botaoProxima.textContent = estado.ronda === estado.total ? t("verResultado") : t("proxima");
     el.botaoProxima.hidden = false;
-    el.botaoProxima.focus();                          // quem joga com o teclado carrega logo em Enter
+    el.botaoProxima.focus({ preventScroll: true });   // quem joga com o teclado carrega logo em Enter
+
+    // No telemóvel, desliza até ao feedback: logo abaixo ficam o crachá e o botão "Próxima"
+    if (TELEMOVEL.matches) {
+        el.feedback.scrollIntoView({ behavior: tipoDeScroll(), block: "start" });
+    }
 }
 
 // Tempo na barra de estado: "00:12", a vermelho nos últimos 5 segundos
