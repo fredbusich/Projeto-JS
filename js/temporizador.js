@@ -10,11 +10,10 @@ export function criarTemporizador(segundosIniciais, aCadaSegundo, aoTerminar) {
     let restantes = segundosIniciais;
     let intervalo = null;                             // o "id" que o setInterval devolve, para o poder parar
 
-    // Começa (ou recomeça) a contagem do início
-    function iniciar() {
+    // Põe o relógio a andar a partir dos segundos que restam
+    function correr() {
         parar();                                      // garante que nunca há dois relógios a correr ao mesmo tempo
-        restantes = segundosIniciais;
-        aCadaSegundo(restantes);                      // mostra logo "00:15", sem esperar 1 segundo
+        aCadaSegundo(restantes);                      // mostra logo o tempo, sem esperar 1 segundo
 
         // setInterval: repete a função a cada 1000 ms (1 segundo) até ser parado
         intervalo = setInterval(() => {
@@ -28,6 +27,17 @@ export function criarTemporizador(segundosIniciais, aCadaSegundo, aoTerminar) {
         }, 1000);
     }
 
+    // Começa a contagem do início (ronda nova)
+    function iniciar() {
+        restantes = segundosIniciais;
+        correr();
+    }
+
+    // Continua de onde parou (ex.: o jogador desistiu de sair a meio)
+    function retomar() {
+        correr();
+    }
+
     function parar() {
         clearInterval(intervalo);                     // desliga o relógio
         intervalo = null;
@@ -38,5 +48,5 @@ export function criarTemporizador(segundosIniciais, aCadaSegundo, aoTerminar) {
         return restantes;
     }
 
-    return { iniciar, parar, segundos };
+    return { iniciar, retomar, parar, segundos };
 }

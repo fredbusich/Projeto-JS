@@ -3,11 +3,12 @@
 
 // No browser, o import precisa do "./" e da extensão ".js"
 import { carregarFrases, buscarAutor } from "./api.js";
-import { criarJogo } from "./jogo.js";
+import { criarJogo, filtrarRespostas } from "./jogo.js";
 import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
 import { criarTemporizador } from "./temporizador.js";
 import { criarMusica } from "./musica.js";
+import { definirIdioma, idiomaAtual, t } from "./idioma.js";
 import * as ui from "./ui.js";                       // * as ui = todas as funções exportadas, dentro de "ui"
 
 const MAX_NOME = 15;
@@ -19,6 +20,9 @@ const musica = criarMusica("audio/tema.mp3");
 // Estado do módulo. Num módulo, estas variáveis NÃO são globais: não existem em window.
 let frases = [];
 let jogo = null;
+let ultimoResultado = null;                           // o resultado da última partida, para a lista de respostas
+let ultimaPosicao = 0;                                // o lugar no top 5 da última partida (0 = sem recorde)
+let aCarregarFrases = false;                          // booleano: true enquanto o fetch das frases não termina
 
 // Um só temporizador para o jogo todo: a cada segundo atualiza o ecrã; ao chegar a 0, o tempo esgota
 const temporizador = criarTemporizador(TEMPO_RONDA, ui.mostrarTempo, tempoEsgotado);
@@ -26,8 +30,10 @@ const temporizador = criarTemporizador(TEMPO_RONDA, ui.mostrarTempo, tempoEsgota
 // ----- arranque -----
 
 async function iniciar() {
-    // Repõe o que ficou guardado da última visita: modo escolhido, som e recordes desse modo
+    // Repõe o que ficou guardado da última visita: língua, modo, som, volume e recordes desse modo
     const preferencias = lerPreferencias();
+    definirIdioma(preferencias.idioma);
+    ui.aplicarTextos();
     ui.definirModo(preferencias.modo);
     ui.mostrarSom(preferencias.som);
     ui.mostrarVolume(preferencias.volume);
@@ -35,10 +41,23 @@ async function iniciar() {
     ui.mostrarRecordes(lerRecordes(preferencias.modo), preferencias.modo);
 
     ligarEventos();
+    await carregarFrasesDoIdioma();
+}
+
+// Carrega as frases da língua atual. Enquanto chegam, "Jogar", "Jogar de novo" e a língua ficam bloqueados.
+// Se falhar, avisa e "Jogar" continua bloqueado.
+async function carregarFrasesDoIdioma() {
+    aCarregarFrases = true;
+    ui.bloquearEnquantoCarrega(true);
     try {
-        frases = await carregarFrases();
+        frases = await carregarFrases(idiomaAtual());
+        ui.mostrarErroNome("");                       // apaga um aviso de erro de uma tentativa anterior
+        ui.bloquearEnquantoCarrega(false);
     } catch (erro) {
-        ui.mostrarErroCarregamento(erro.message);
+        frases = [];
+        ui.mostrarErroCarregamento();
+    } finally {
+        aCarregarFrases = false;                      // finally corre sempre: com sucesso ou com erro
     }
 }
 
@@ -51,7 +70,9 @@ function ligarEventos() {
     // "input" dispara a cada letra: contador em tempo real e o erro desaparece enquanto se escreve
     campoNome.addEventListener("input", () => {
         ui.atualizarContador(campoNome.value.length, MAX_NOME);
-        ui.mostrarErroNome("");
+        if (frases.length > 0) {
+            ui.mostrarErroNome("");                   // não apaga o aviso de "frases não carregadas"
+        }
     });
 
     // "change" dispara quando se escolhe outro modo: pinta o cartão, guarda a escolha e mostra os recordes desse modo
@@ -62,6 +83,9 @@ function ligarEventos() {
             ui.mostrarRecordes(lerRecordes(radio.value), radio.value);
         });
     });
+
+    // Língua: PT ↔ EN (o botão fica desativado durante a partida)
+    document.getElementById("botao-idioma").addEventListener("click", trocarIdioma);
 
     // Som ligado/desligado: inverte o booleano, guarda-o e toca ou pára a música
     document.getElementById("botao-som").addEventListener("click", () => {
@@ -89,6 +113,20 @@ function ligarEventos() {
 
     document.getElementById("botao-proxima").addEventListener("click", proximaRonda);
 
+    document.getElementById("botao-sair").addEventListener("click", sairDaPartida);
+
+    // Lista de respostas no fim: o botão abre e fecha
+    document.getElementById("botao-ver-respostas").addEventListener("click", () => {
+        ui.alternarRespostas(!ui.respostasVisiveis());
+    });
+
+    // Filtros da lista: cada botão tem data-filtro="todas", "certas" ou "erradas"
+    document.querySelectorAll(".filtro").forEach((botao) => {
+        botao.addEventListener("click", () => {
+            mostrarListaDeRespostas(botao.dataset.filtro);
+        });
+    });
+
     // Jogar de novo com o mesmo nome e modo (destructuring do estado)
     document.getElementById("botao-repetir").addEventListener("click", () => {
         const { nome, modo } = jogo.estado();
@@ -103,6 +141,32 @@ function ligarEventos() {
     });
 }
 
+// ----- língua -----
+
+// Troca PT ↔ EN. Só é possível nos ecrãs de início e de fim (no jogo o botão está desativado).
+async function trocarIdioma() {
+    const novo = idiomaAtual() === "pt" ? "en" : "pt";
+    definirIdioma(novo);
+    guardarPreferencia("idioma", novo);
+
+    ui.aplicarTextos();                               // textos fixos do HTML
+    ui.mostrarSom(lerPreferencias().som);             // o aria-label do botão de som também muda
+    const { modo } = ui.lerFormulario();
+    ui.mostrarRecordes(lerRecordes(modo), modo);      // "Modo normal" → "Normal mode", datas no formato novo
+
+    // As frases da nova língua (os id são os mesmos nos dois ficheiros)
+    await carregarFrasesDoIdioma();
+
+    // No ecrã final, volta a desenhar o resultado: o título e a lista também mudam de língua
+    // (só se as frases novas chegaram: a lista precisa delas para mostrar os textos)
+    if (ui.ecraAtual() === "fim" && jogo !== null && frases.length > 0) {
+        ultimoResultado = jogo.resultado();          // o título final é calculado de novo, já na língua nova
+        ui.mostrarFim(ultimoResultado, ultimaPosicao);
+        ui.alternarRespostas(ui.respostasVisiveis()); // mantém aberta/fechada, mas traduz o texto do botão
+        mostrarListaDeRespostas(ui.filtroAtivo());
+    }
+}
+
 // ----- fluxo do jogo -----
 
 function aoSubmeter(evento) {
@@ -112,7 +176,12 @@ function aoSubmeter(evento) {
     const validacao = validarNome(nome);
 
     if (!validacao.valido) {
-        ui.mostrarErroNome(validacao.erro);
+        ui.mostrarErroNome(validacao.erro);           // a chave do erro: o ui.js traduz
+        return;
+    }
+
+    // Segunda proteção (a primeira é o botão desativado): sem frases, ou com as frases a mudar de língua, não há partida
+    if (aCarregarFrases || frases.length === 0) {
         return;
     }
 
@@ -145,6 +214,9 @@ function aoCarregarTecla(evento) {
 }
 
 function comecarPartida(nome, modo) {
+    if (aCarregarFrases || frases.length === 0) {
+        return;                                       // também protege o "Jogar de novo"
+    }
     jogo = criarJogo(frases, modo, nome);
     ui.mostrarEcra("jogo");
     ui.mostrarRonda(jogo.estado(), responder);       // responder é passada como callback
@@ -160,18 +232,30 @@ async function responder(valor) {
     }
 
     ui.mostrarResposta(resposta, valor, jogo.estado());
-    ui.revelarAutor(resposta.frase);                  // nome e fonte já; resumo "A carregar…"
+    ui.revelarAutor(resposta.frase);                  // nome, nota cómica e fonte: já, sem esperar
 
-    // Pedido à Wikipédia: o jogo NÃO espera por ele. Já se pode carregar em "Próxima".
+    // Pedido à Wikipédia (foto e link), na língua atual: o jogo NÃO espera por ele.
     try {
-        const wiki = await buscarAutor(resposta.frase.wiki);
+        const wiki = await buscarAutor(resposta.frase.wiki, idiomaAtual());
         if (aindaNaMesmaRonda(resposta.frase.id)) {
-            ui.completarAutor(wiki);
+            ui.completarAutor(resposta.frase, wiki);
         }
     } catch (erro) {
-        if (aindaNaMesmaRonda(resposta.frase.id)) {
-            ui.autorIndisponivel();
-        }
+        // Sem Wikipédia, o crachá fica com a silhueta (ou a foto local) e sem link: o jogo continua
+        console.warn("Wikipédia indisponível:", erro.message);
+    }
+}
+
+// Sair a meio da partida: o relógio pára enquanto o jogador decide.
+// confirm() mostra uma janela do browser com "OK" e "Cancelar" e devolve true ou false.
+function sairDaPartida() {
+    temporizador.parar();
+    const querSair = confirm(t("confirmarSair"));
+
+    if (querSair) {
+        ui.mostrarEcra("inicio");                     // a partida é abandonada: não conta para os recordes
+    } else if (!jogo.estado().respondeu) {
+        temporizador.retomar();                       // desistiu de sair: o tempo continua de onde estava
     }
 }
 
@@ -191,17 +275,28 @@ function aindaNaMesmaRonda(idFrase) {
 }
 
 function proximaRonda() {
-    jogo.avancar();
+    // avancar() devolve false se ainda não se respondeu: nesse caso não há nada a fazer
+    if (!jogo.avancar()) {
+        return;
+    }
 
     if (jogo.terminou()) {
-        const resultado = jogo.resultado();
-        const posicao = guardarRecorde(resultado);   // 1 a 5 se entrou no top, 0 se não
-        ui.mostrarFim(resultado, posicao);
+        ultimoResultado = jogo.resultado();
+        ultimaPosicao = guardarRecorde(ultimoResultado);   // 1 a 5 se entrou no top, 0 se não
+        ui.mostrarFim(ultimoResultado, ultimaPosicao);
+        ui.alternarRespostas(false);                  // cada partida começa com a lista fechada…
+        mostrarListaDeRespostas("todas");             // …e pronta no filtro "Todas"
         ui.mostrarEcra("fim");
     } else {
         ui.mostrarRonda(jogo.estado(), responder);
         temporizador.iniciar();                       // relógio novo para a ronda nova
     }
+}
+
+// Desenha a lista de respostas com um filtro: pinta o botão do filtro e mostra só as respostas desse filtro
+function mostrarListaDeRespostas(filtro) {
+    ui.marcarFiltro(filtro, ultimoResultado.respostas);
+    ui.mostrarRespostas(filtrarRespostas(ultimoResultado.respostas, filtro), frases, ultimoResultado.modo);
 }
 
 iniciar();

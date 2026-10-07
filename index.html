@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Jogo: adivinha quem disse a frase — Michael Scott, Dwight Schrute ou um filósofo?">
     <title>That's What Who Said?</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -12,10 +13,13 @@
     <script type="module" src="js/main.js"></script>
 </head>
 <body>
+    <!-- Textos traduzíveis: data-texto="chave" (texto), data-texto-placeholder e data-texto-aria (atributos).
+         O JS (ui.aplicarTextos) procura estes atributos e põe o texto da língua escolhida. -->
     <header>
         <h1>That's What Who Said?</h1>
-        <div class="controlo-som">
-            <input id="volume" type="range" min="0" max="100" step="5" value="30" aria-label="Volume da música">
+        <div class="controlos">
+            <button id="botao-idioma" type="button" class="botao-idioma" data-texto="botaoIdioma" data-texto-aria="botaoIdiomaAria" aria-label="Switch to English">EN</button>
+            <input id="volume" type="range" min="0" max="100" step="5" value="30" data-texto-aria="volume" aria-label="Volume da música">
             <button id="botao-som" type="button" aria-label="Desligar som">🔊</button>
         </div>
     </header>
@@ -26,36 +30,42 @@
             <div class="grelha">
                 <!-- Coluna esquerda: regras e formulário -->
                 <div class="cartao">
-                    <h2>Como se joga</h2>
-                    <p>Lê a frase e adivinha quem a disse: o Michael, o Dwight ou um filósofo?</p>
-                    <p>Filósofos em jogo: Sócrates, Nietzsche, Confúcio, Marco Aurélio e Sun Tzu.</p>
+                    <h2 data-texto="comoSeJoga">Como se joga</h2>
+                    <p data-texto="regras1">Lê a frase e adivinha quem a disse: o Michael, o Dwight ou um filósofo?</p>
+                    <p data-texto="regras2">Filósofos em jogo: Sócrates, Nietzsche, Confúcio, Marco Aurélio e Sun Tzu.</p>
 
                     <form id="form-inicio" novalidate>
-                        <label for="nome">O teu nome <span id="contador-nome" class="contador">0/15</span></label>
-                        <input id="nome" type="text" name="nome" maxlength="15" placeholder="Ex: Pam Beesly">
+                        <!-- O contador fica FORA do label: assim o nome do campo é só "O teu nome".
+                             aria-describedby liga o contador e o erro ao campo, como informação extra. -->
+                        <div class="campo-cabecalho">
+                            <label for="nome" data-texto="oTeuNome">O teu nome</label>
+                            <span id="contador-nome" class="contador">0/15</span>
+                        </div>
+                        <input id="nome" type="text" name="nome" maxlength="15" aria-describedby="contador-nome erro-nome" data-texto-placeholder="exemploNome" placeholder="Ex: Pam Beesly">
                         <p id="erro-nome" class="erro" aria-live="polite"></p>
 
                         <fieldset>
-                            <legend>Modo</legend>
+                            <legend data-texto="modo">Modo</legend>
                             <label class="cartao-modo selecionado">
                                 <input type="radio" name="modo" value="normal" checked>
-                                <strong>Normal</strong>
-                                <span>Michael, Dwight ou Filósofo</span>
+                                <strong data-texto="modoNormal">Normal</strong>
+                                <span data-texto="modoNormalDescricao">Michael, Dwight ou Filósofo</span>
                             </label>
                             <label class="cartao-modo">
                                 <input type="radio" name="modo" value="dificil">
-                                <strong>Difícil</strong>
-                                <span>Adivinha o nome exato</span>
+                                <strong data-texto="modoDificil">Difícil</strong>
+                                <span data-texto="modoDificilDescricao">Adivinha o nome exato</span>
                             </label>
                         </fieldset>
 
-                        <button type="submit">Jogar</button>
+                        <!-- Começa desativado: só fica ativo quando as frases chegarem (fetch) -->
+                        <button type="submit" data-texto="jogar" disabled>Jogar</button>
                     </form>
                 </div>
 
                 <!-- Coluna direita: recordes (os <li> são criados pelo JS) -->
                 <aside class="post-it">
-                    <h2>Recordes · <span id="recordes-modo">Modo normal</span></h2>
+                    <h2><span data-texto="recordes">Recordes</span> · <span id="recordes-modo">Modo normal</span></h2>
                     <ol id="lista-recordes"></ol>
                 </aside>
             </div>
@@ -66,24 +76,26 @@
             <!-- Barra de estado: o JS atualiza os valores a cada ronda -->
             <div class="barra-estado">
                 <h2 id="ronda">Ronda 1 de 10</h2>
-                <p>Pontos: <span id="pontos">0</span></p>
-                <p>Tempo: <span id="tempo">00:15</span></p>
+                <p><span data-texto="pontos">Pontos:</span> <span id="pontos">0</span></p>
+                <p><span data-texto="tempo">Tempo:</span> <span id="tempo">00:15</span></p>
+                <button id="botao-sair" type="button" class="botao-secundario" data-texto="sair">Sair</button>
             </div>
 
             <div class="grelha">
                 <!-- Coluna esquerda: memorando, opções e feedback -->
                 <div class="cartao memorando">
-                    <p class="memorando-titulo">Memorando</p>
-                    <p><strong>Para:</strong> <span id="memo-para">Jogador</span></p>
-                    <p><strong>Assunto:</strong> Quem disse isto?</p>
+                    <p class="memorando-titulo" data-texto="memorando">Memorando</p>
+                    <p><strong data-texto="para">Para:</strong> <span id="memo-para">Jogador</span></p>
+                    <p><strong data-texto="assunto">Assunto:</strong> <span data-texto="quemDisseIsto">Quem disse isto?</span></p>
 
-                    <blockquote id="frase">
+                    <!-- tabindex="-1": o JS pode pôr o foco aqui (cada ronda nova), mas o Tab não para aqui -->
+                    <blockquote id="frase" tabindex="-1">
                         <p id="texto-frase">A frase aparece aqui.</p>
                     </blockquote>
 
                     <!-- Os botões de resposta são criados pelo JS em cada ronda -->
                     <div id="opcoes" class="opcoes"></div>
-                    <p class="dica-teclas">Dica: também podes responder com as teclas 1, 2 e 3.</p>
+                    <p class="dica-teclas" data-texto="dicaTeclas">Dica: também podes responder com as teclas 1, 2 e 3.</p>
                     <p id="feedback" class="feedback" aria-live="polite"></p>
                 </div>
 
@@ -91,11 +103,11 @@
                 <div class="coluna-lateral">
                     <article id="cartao-autor" class="cracha por-revelar">
                         <img id="autor-foto" src="img/sem-foto.svg" alt="" width="120" height="120">
-                        <p class="cracha-etiqueta">Quem é?</p>
+                        <p class="cracha-etiqueta" data-texto="quemE">Quem é?</p>
                         <h3 id="autor-nome">Funcionário por identificar</h3>
-                        <p id="autor-resumo">Responde para descobrir.</p>
+                        <p id="autor-nota">Responde para descobrir.</p>
                         <p id="autor-fonte" class="cracha-fonte"></p>
-                        <a id="autor-link" href="#" target="_blank" rel="noopener" hidden>Ler mais na Wikipédia</a>
+                        <a id="autor-link" href="#" target="_blank" rel="noopener" data-texto="lerMais" hidden>Ler mais na Wikipédia</a>
                     </article>
 
                     <button id="botao-proxima" type="button" hidden>Próxima →</button>
@@ -105,13 +117,17 @@
 
         <!-- ===== Ecrã 3: fim ===== -->
         <section id="ecra-fim" hidden>
-            <h2>Fim da partida</h2>
+            <h2 data-texto="fimDaPartida">Fim da partida</h2>
 
             <div class="grelha">
                 <!-- Coluna esquerda: certificado com o título conquistado -->
                 <div class="cartao certificado">
-                    <p class="certificado-empresa">Dunder Mifflin · Sucursal de Scranton</p>
-                    <p>Certifica-se que <strong id="fim-nome">Jogador</strong> cumpriu os requisitos do cargo de:</p>
+                    <p class="certificado-empresa" data-texto="empresa">Dunder Mifflin · Sucursal de Scranton</p>
+                    <p>
+                        <span data-texto="certificaQue">Certifica-se que</span>
+                        <strong id="fim-nome">Jogador</strong>
+                        <span data-texto="cumpriuRequisitos">cumpriu os requisitos do cargo de:</span>
+                    </p>
                     <p id="titulo-final" class="titulo-final">Estagiário</p>
                     <p id="resultado">0 de 10 acertos · 0% · 0 pontos</p>
                 </div>
@@ -119,7 +135,7 @@
                 <!-- Coluna direita: acertos por personagem e aviso de recorde -->
                 <div class="coluna-lateral">
                     <div class="cartao">
-                        <h3>Acertos por personagem</h3>
+                        <h3 data-texto="acertosPorPersonagem">Acertos por personagem</h3>
                         <ul id="acertos-personagem"></ul>
                     </div>
                     <p id="novo-recorde" class="post-it" hidden>Novo recorde!</p>
@@ -127,15 +143,28 @@
             </div>
 
             <div class="botoes-fim">
-                <button id="botao-repetir" type="button">Jogar de novo</button>
-                <button id="botao-voltar" type="button">Início</button>
+                <button id="botao-repetir" type="button" data-texto="jogarDeNovo">Jogar de novo</button>
+                <button id="botao-ver-respostas" type="button" class="botao-secundario" aria-expanded="false" aria-controls="lista-respostas">Ver as respostas</button>
+                <button id="botao-voltar" type="button" class="botao-secundario" data-texto="inicio">Início</button>
+            </div>
+
+            <!-- Lista das respostas da partida (os <li> e as contagens são criados pelo JS) -->
+            <div id="lista-respostas" class="cartao lista-respostas" hidden>
+                <h3 data-texto="asTuasRespostas">As tuas respostas</h3>
+                <div class="filtros" role="group" data-texto-aria="filtrarRespostas" aria-label="Filtrar respostas">
+                    <!-- aria-pressed diz aos leitores de ecrã qual é o filtro ativo (a cor não chega) -->
+                    <button type="button" class="filtro ativo" data-filtro="todas" aria-pressed="true">Todas</button>
+                    <button type="button" class="filtro" data-filtro="certas" aria-pressed="false">Certas</button>
+                    <button type="button" class="filtro" data-filtro="erradas" aria-pressed="false">Erradas</button>
+                </div>
+                <ol id="respostas"></ol>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>Projeto prático · JavaScript · Frederico Busich</p>
-        <p>Resumos e fotos dos autores: Wikipédia</p>
+        <p data-texto="rodape1">Projeto prático · JavaScript · Frederico Busich</p>
+        <p data-texto="rodape2">Fotos dos autores: Wikipédia</p>
     </footer>
 </body>
 </html>

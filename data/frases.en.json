@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "texto": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+    "nota": "Machiavelli wrote that it's safer to be feared. Michael only read half and wanted both.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S2 · The Fight"
+  },
+  {
+    "id": 2,
+    "texto": "Sometimes I'll start a sentence and I don't even know where it's going. I just hope I find it along the way.",
+    "nota": "Michael calls this an \"improversation\". Philosophers call it not having a plan.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S5 · The Duel"
+  },
+  {
+    "id": 3,
+    "texto": "I'm not superstitious, but I am a little stitious.",
+    "nota": "No philosopher ever invented a word this fast. Or this badly.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S4 · Fun Run"
+  },
+  {
+    "id": 4,
+    "texto": "Wikipedia is the best thing ever. Anyone in the world can write anything they want about any subject, so you know you are getting the best possible information.",
+    "nota": "Irony: the photo on this badge came from Wikipedia. Michael would be proud.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S3 · The Negotiation"
+  },
+  {
+    "id": 5,
+    "texto": "Society teaches us that having feelings and crying is bad and wrong. Well, that's baloney, because grief isn't wrong.",
+    "nota": "He said this at the funeral he organized for a bird. Speech included.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S3 · Grief Counseling"
+  },
+  {
+    "id": 6,
+    "texto": "And I knew exactly what to do. But in a much more real sense, I had no idea what to do.",
+    "nota": "Socrates admitted he didn't know. Michael manages to know and not know at the same time.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S5 · Stress Relief"
+  },
+  {
+    "id": 7,
+    "texto": "Do I need to be liked? Absolutely not. I like to be liked. I enjoy being liked. I have to be liked. But it's not like this compulsive need to be liked. Like my need to be praised.",
+    "nota": "Says he doesn't need it. Repeats it four times. Needs it.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S4 · Fun Run"
+  },
+  {
+    "id": 8,
+    "texto": "Make friends first, make sales second, make love third. In no particular order.",
+    "nota": "A sales strategy no management handbook would ever approve. In no particular order.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S6 · New Leads"
+  },
+  {
+    "id": 9,
+    "texto": "I'm an early bird and I'm a night owl. So I'm wise and I have worms.",
+    "nota": "Two proverbs walked into a sentence. Only a Michael came out.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S2 · Office Olympics"
+  },
+  {
+    "id": 10,
+    "texto": "Fool me once, strike one. But fool me twice… strike three.",
+    "nota": "He mixed a proverb with baseball. Both lost.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S3 · Traveling Salesmen"
+  },
+  {
+    "id": 11,
+    "texto": "Webster's Dictionary defines wedding as the fusing of two metals with a hot torch.",
+    "nota": "He said this at a wedding, into a microphone. Nobody stopped him.",
+    "autor": "Michael Scott",
+    "pessoa": "michael",
+    "grupo": "michael",
+    "wiki": "Michael_Scott_(The_Office)",
+    "fonte": "The Office · S3 · Phyllis' Wedding"
+  },
+  {
+    "id": 12,
+    "texto": "Whenever I'm about to do something, I think, 'Would an idiot do that?' And if they would, I do not do that thing.",
+    "nota": "A flawless philosophical test. Dwight just never applied it to Dwight.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S3 · Business School"
+  },
+  {
+    "id": 13,
+    "texto": "Through concentration, I can raise and lower my cholesterol at will.",
+    "nota": "Medically impossible. Spiritually, very Dwight.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S1 · Health Care"
+  },
+  {
+    "id": 14,
+    "texto": "I never smile if I can help it. Showing one's teeth is a submission signal in primates.",
+    "nota": "Dwight read one book about primates and took it way too seriously. Like everything.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S2 · Conflict Resolution"
+  },
+  {
+    "id": 15,
+    "texto": "People underestimate the power of nostalgia. Nostalgia is truly one of the great human weaknesses, second only to the neck.",
+    "nota": "Starts like a poet, ends like a martial arts manual.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S9 · The Farm"
+  },
+  {
+    "id": 16,
+    "texto": "In the wild, there is no health care. Ow, I hurt my leg, I can't run, a lion eats me and I'm dead. Well, I'm not dead. I'm the lion.",
+    "nota": "Started talking about health insurance and ended up at the top of the food chain.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S1 · Health Care"
+  },
+  {
+    "id": 17,
+    "texto": "I am fast. To give you a reference point, I am somewhere between a snake and a mongoose… and a panther.",
+    "nota": "A résumé written by a wildlife documentary.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S3 · The Merger"
+  },
+  {
+    "id": 18,
+    "texto": "Not everything is a lesson. Sometimes you just fail.",
+    "nota": "Sounds like Marcus Aurelius. It was said to a temp after his first failed sale.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S3 · Initiation"
+  },
+  {
+    "id": 19,
+    "texto": "How would I describe myself? Three words. Hardworking. Alpha male. Jackhammer. Merciless. Insatiable.",
+    "nota": "Three words. Five words. Zero shame.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S3 · The Return"
+  },
+  {
+    "id": 20,
+    "texto": "I don't have a lot of experience with vampires, but I have hunted werewolves. I shot one once, but by the time I got to it, it had turned back into my neighbor's dog.",
+    "nota": "Vampires? Not convinced. Werewolves are another story.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S3 · Business School"
+  },
+  {
+    "id": 21,
+    "texto": "Nothing stresses me out. Except having to seek the approval of my inferiors.",
+    "nota": "Stress management, beet farm style.",
+    "autor": "Dwight Schrute",
+    "pessoa": "dwight",
+    "grupo": "dwight",
+    "wiki": "Dwight_Schrute",
+    "fonte": "The Office · S5 · Stress Relief"
+  },
+  {
+    "id": 22,
+    "texto": "What does not kill me makes me stronger.",
+    "nota": "Nietzsche said it first. Dwight just owns the beet farm.",
+    "autor": "Friedrich Nietzsche",
+    "pessoa": "nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Twilight of the Idols, Maxims and Arrows, 8"
+  },
+  {
+    "id": 23,
+    "texto": "Without music, life would be a mistake.",
+    "nota": "A quote worthy of a motivational poster in Michael's office.",
+    "autor": "Friedrich Nietzsche",
+    "pessoa": "nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Twilight of the Idols, Maxims and Arrows, 33"
+  },
+  {
+    "id": 24,
+    "texto": "In individuals, insanity is rare; but in groups, parties, nations and epochs, it is the rule.",
+    "nota": "Nietzsche never worked at Dunder Mifflin, but he described it perfectly.",
+    "autor": "Friedrich Nietzsche",
+    "pessoa": "nietzsche",
+    "grupo": "filosofo",
+    "wiki": "Friedrich_Nietzsche",
+    "fonte": "Beyond Good and Evil, §156"
+  },
+  {
+    "id": 25,
+    "texto": "The unexamined life is not worth living.",
+    "nota": "Michael examines his life every single day. Out loud. To the camera.",
+    "autor": "Socrates",
+    "pessoa": "socrates",
+    "grupo": "filosofo",
+    "wiki": "Socrates",
+    "fonte": "Plato, Apology of Socrates, 38a"
+  },
+  {
+    "id": 26,
+    "texto": "I am a sort of gadfly, given to the city by the god; the city is like a great and noble horse, slow because of its size, that needs to be stirred into life.",
+    "nota": "Socrates stinging Athens is Dwight stinging Jim. Just with a toga.",
+    "autor": "Socrates",
+    "pessoa": "socrates",
+    "grupo": "filosofo",
+    "wiki": "Socrates",
+    "fonte": "Plato, Apology of Socrates, 30e"
+  },
+  {
+    "id": 27,
+    "texto": "Wonder is the feeling of a philosopher, and philosophy begins in wonder.",
+    "nota": "Wonder is the feeling of a philosopher. And of Pam, every time Michael opens his mouth.",
+    "autor": "Socrates",
+    "pessoa": "socrates",
+    "grupo": "filosofo",
+    "wiki": "Socrates",
+    "fonte": "Plato, Theaetetus, 155d"
+  },
+  {
+    "id": 28,
+    "texto": "Is it not delightful to have friends coming from distant quarters?",
+    "nota": "That's Michael whenever someone from corporate visits Scranton.",
+    "autor": "Confucius",
+    "pessoa": "confucio",
+    "grupo": "filosofo",
+    "wiki": "Confucius",
+    "fonte": "Analects, 1.1"
+  },
+  {
+    "id": 29,
+    "texto": "I have not seen one who loves virtue as he loves beauty.",
+    "nota": "Written 2,500 years ago. Still describes half the office.",
+    "autor": "Confucius",
+    "pessoa": "confucio",
+    "grupo": "filosofo",
+    "wiki": "Confucius",
+    "fonte": "Analects, 9.18"
+  },
+  {
+    "id": 30,
+    "texto": "To see what is right and not to do it is want of courage.",
+    "nota": "Dwight would quote this right before snitching to Michael.",
+    "autor": "Confucius",
+    "pessoa": "confucio",
+    "grupo": "filosofo",
+    "wiki": "Confucius",
+    "fonte": "Analects, 2.24"
+  },
+  {
+    "id": 31,
+    "texto": "Begin the morning by saying to yourself: I shall meet with the busybody, the ungrateful, arrogant, deceitful, envious, unsocial.",
+    "nota": "A Roman emperor describing a Monday at Dunder Mifflin.",
+    "autor": "Marcus Aurelius",
+    "pessoa": "marco-aurelio",
+    "grupo": "filosofo",
+    "wiki": "Marcus_Aurelius",
+    "fonte": "Meditations, 2.1"
+  },
+  {
+    "id": 32,
+    "texto": "The art of life is more like the wrestler's art than the dancer's.",
+    "nota": "Dwight agrees. That's why he chose karate over ballet.",
+    "autor": "Marcus Aurelius",
+    "pessoa": "marco-aurelio",
+    "grupo": "filosofo",
+    "wiki": "Marcus_Aurelius",
+    "fonte": "Meditations, 7.61"
+  },
+  {
+    "id": 33,
+    "texto": "The best way of avenging yourself is not to become like the wrongdoer.",
+    "nota": "Advice Dwight never followed. Neither did Jim.",
+    "autor": "Marcus Aurelius",
+    "pessoa": "marco-aurelio",
+    "grupo": "filosofo",
+    "wiki": "Marcus_Aurelius",
+    "fonte": "Meditations, 6.6"
+  },
+  {
+    "id": 34,
+    "texto": "All warfare is based on deception.",
+    "nota": "Jim's motto every time he pranks Dwight.",
+    "autor": "Sun Tzu",
+    "pessoa": "sun-tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "The Art of War, ch. 1"
+  },
+  {
+    "id": 35,
+    "texto": "Let your plans be dark and impenetrable as night, and when you move, fall like a thunderbolt.",
+    "nota": "This is underlined in Dwight's copy. Twice.",
+    "autor": "Sun Tzu",
+    "pessoa": "sun-tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "The Art of War, ch. 7"
+  },
+  {
+    "id": 36,
+    "texto": "The supreme art of war is to subdue the enemy without fighting.",
+    "nota": "Michael's strategy for firing someone: never doing it.",
+    "autor": "Sun Tzu",
+    "pessoa": "sun-tzu",
+    "grupo": "filosofo",
+    "wiki": "Sun_Tzu",
+    "fonte": "The Art of War, ch. 3"
+  }
+]
