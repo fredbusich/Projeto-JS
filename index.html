@@ -162,6 +162,22 @@
         </section>
     </main>
 
+    <!-- Janela "Sair da partida?". <dialog> é o elemento de janela do próprio HTML:
+         aberto com showModal(), fica por cima de tudo, bloqueia o resto da página e o fundo
+         (::backdrop no CSS) desfoca o jogo, para a frase não poder ser lida enquanto se decide.
+         form method="dialog": carregar num botão fecha a janela e guarda o value dele em returnValue. -->
+    <dialog id="janela-sair" aria-labelledby="janela-sair-titulo" aria-describedby="janela-sair-texto">
+        <form method="dialog" class="janela">
+            <h2 id="janela-sair-titulo" data-texto="sairTitulo">Sair da partida?</h2>
+            <p id="janela-sair-texto" data-texto="confirmarSair">A partida em curso não fica guardada nos recordes.</p>
+            <div class="janela-botoes">
+                <!-- O primeiro botão recebe o foco ao abrir: Enter continua o jogo, a opção segura -->
+                <button type="submit" value="continuar" class="botao-secundario" data-texto="continuarJogar">Continuar a jogar</button>
+                <button type="submit" value="sair" data-texto="sairPartida">Sair</button>
+            </div>
+        </form>
+    </dialog>
+
     <footer>
         <p data-texto="rodape1">Projeto prático · JavaScript · Frederico Busich</p>
         <p data-texto="rodape2">Fotos dos autores: Wikipédia</p>
