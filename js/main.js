@@ -8,7 +8,7 @@ import { formatarNome, validarNome } from "./utils.js";
 import { lerRecordes, guardarRecorde, lerPreferencias, guardarPreferencia } from "./storage.js";
 import { criarTemporizador } from "./temporizador.js";
 import { criarMusica } from "./musica.js";
-import { definirIdioma, idiomaAtual, t } from "./idioma.js";
+import { definirIdioma, idiomaAtual } from "./idioma.js";
 import * as ui from "./ui.js";                       // * as ui = todas as funções exportadas, dentro de "ui"
 
 const MAX_NOME = 15;
@@ -198,6 +198,9 @@ function aoCarregarTecla(evento) {
     if (jogo === null || jogo.terminou() || document.getElementById("ecra-jogo").hidden) {
         return;
     }
+    if (ui.janelaAberta()) {
+        return;                                       // a janela "Sair?" está aberta: a frase está tapada
+    }
     if (evento.ctrlKey || evento.altKey || evento.metaKey) {
         return;
     }
@@ -247,10 +250,11 @@ async function responder(valor) {
 }
 
 // Sair a meio da partida: o relógio pára enquanto o jogador decide.
-// confirm() mostra uma janela do browser com "OK" e "Cancelar" e devolve true ou false.
-function sairDaPartida() {
+// A janela é nossa (ui.js) e o fundo desfocado tapa a frase, para ninguém a ler com o tempo parado.
+// await: espera pela escolha sem bloquear a página (o confirm() do browser bloqueava tudo).
+async function sairDaPartida() {
     temporizador.parar();
-    const querSair = confirm(t("confirmarSair"));
+    const querSair = await ui.perguntarSeQuerSair();
 
     if (querSair) {
         ui.mostrarEcra("inicio");                     // a partida é abandonada: não conta para os recordes

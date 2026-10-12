@@ -66,6 +66,7 @@ const el = {
     listaRespostas: document.getElementById("lista-respostas"),
     respostas: document.getElementById("respostas"),
     filtros: document.querySelectorAll(".filtro"),
+    janelaSair: document.getElementById("janela-sair"),
 };
 
 // ----- língua -----
@@ -104,6 +105,28 @@ export function ecraAtual() {
         }
     }
     return "inicio";
+}
+
+// ----- janela "Sair da partida?" -----
+
+// Abre a janela e devolve uma Promise que fica cumprida com true (sair) ou false (continuar)
+// quando o jogador escolhe. É o mesmo que o confirm() fazia, mas com uma janela nossa:
+// fica com o estilo do jogo, é traduzida e o fundo desfocado tapa a frase.
+export function perguntarSeQuerSair() {
+    return new Promise((resolver) => {
+        el.janelaSair.returnValue = "";               // limpa a escolha da última vez (Esc deixa-a vazia)
+        // "close" dispara ao carregar num botão ou na tecla Esc. { once: true }: o listener
+        // apaga-se sozinho depois de correr, para não se acumularem um por cada vez que se abre.
+        el.janelaSair.addEventListener("close", () => {
+            resolver(el.janelaSair.returnValue === "sair");
+        }, { once: true });
+        el.janelaSair.showModal();                    // modal: o resto da página fica bloqueado
+    });
+}
+
+// Com a janela aberta, as teclas 1, 2 e 3 não podem responder à frase escondida
+export function janelaAberta() {
+    return el.janelaSair.open;
 }
 
 // ----- ecrã de início -----

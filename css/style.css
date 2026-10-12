@@ -669,6 +669,44 @@ legend {
     font-size: 0.85rem;
 }
 
+/* Janela "Sair da partida?" (<dialog>). O browser já a centra no ecrã quando é aberta com showModal(). */
+#janela-sair {
+    margin: auto;                         /* o reset (* { margin: 0 }) tirava a centragem que o browser dá ao dialog */
+    width: min(420px, calc(100% - var(--espaco) * 2));   /* 420px, ou a largura do ecrã menos as margens */
+    padding: 0;
+    border: 1px solid var(--vidro-borda);
+    border-radius: var(--raio-vidro);
+    background: var(--cor-memorando);     /* opaca: a janela tem de se ler bem */
+    box-shadow: var(--sombra-vidro);
+    color: var(--cor-tinta);
+}
+
+/* ::backdrop = a camada que o browser põe por trás de um dialog modal, a cobrir a página toda.
+   Escurece e desfoca muito: a frase fica ilegível enquanto o jogador decide se sai. */
+#janela-sair::backdrop {
+    background: rgba(15, 20, 28, 0.6);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
+.janela {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco);
+    padding: calc(var(--espaco) * 2);
+}
+
+.janela h2 {
+    font-family: var(--letra-maquina);
+}
+
+.janela-botoes {
+    display: flex;
+    flex-wrap: wrap;                      /* no telemóvel, se não couberem lado a lado, passam para baixo */
+    justify-content: flex-end;
+    gap: calc(var(--espaco) * 0.75);
+}
+
 /* Lista das respostas no fim da partida */
 .lista-respostas {
     margin-top: calc(var(--espaco) * 2);
