@@ -21,6 +21,7 @@ const TEXTOS = {
         // ecrã de início
         comoSeJoga: "Como se joga",
         regras1: "Lê a frase e adivinha quem a disse: o Michael, o Dwight ou um filósofo?",
+        regrasRondas: "Cada partida tem 10 rondas de 15 segundos. Acertar vale 10 pontos, mais 1 por cada segundo que sobrar; errar ou deixar o tempo acabar vale 0.",
         regras2: "Filósofos em jogo: Sócrates, Nietzsche, Confúcio, Marco Aurélio e Sun Tzu.",
         oTeuNome: "O teu nome",
         exemploNome: "Ex: Pam Beesly",
@@ -116,6 +117,7 @@ const TEXTOS = {
 
         comoSeJoga: "How to play",
         regras1: "Read the quote and guess who said it: Michael, Dwight or a philosopher?",
+        regrasRondas: "Each game has 10 rounds of 15 seconds. A correct answer is worth 10 points, plus 1 for every second left; a wrong answer or running out of time is worth 0.",
         regras2: "Philosophers in play: Socrates, Nietzsche, Confucius, Marcus Aurelius and Sun Tzu.",
         oTeuNome: "Your name",
         exemploNome: "e.g. Pam Beesly",
