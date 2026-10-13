@@ -133,12 +133,15 @@ function ligarEventos() {
         comecarPartida(nome, modo);
     });
 
-    // Voltar ao início: os recordes são atualizados (pode ter entrado um novo)
-    document.getElementById("botao-voltar").addEventListener("click", () => {
-        const { modo } = ui.lerFormulario();
-        ui.mostrarRecordes(lerRecordes(modo), modo);
-        ui.mostrarEcra("inicio");
-    });
+    document.getElementById("botao-voltar").addEventListener("click", voltarAoInicio);
+}
+
+// Volta ao ecrã inicial com os recordes atualizados: pode ter entrado um novo desde a última vez que lá estivemos.
+// Usada pelo botão "Início" e pelo "Sair" a meio da partida (ex.: acabar com recorde, "Jogar de novo" e sair).
+function voltarAoInicio() {
+    const { modo } = ui.lerFormulario();
+    ui.mostrarRecordes(lerRecordes(modo), modo);
+    ui.mostrarEcra("inicio");
 }
 
 // ----- língua -----
@@ -257,7 +260,7 @@ async function sairDaPartida() {
     const querSair = await ui.perguntarSeQuerSair();
 
     if (querSair) {
-        ui.mostrarEcra("inicio");                     // a partida é abandonada: não conta para os recordes
+        voltarAoInicio();                             // a partida é abandonada: não conta para os recordes
     } else if (!jogo.estado().respondeu) {
         temporizador.retomar();                       // desistiu de sair: o tempo continua de onde estava
     }
@@ -299,6 +302,10 @@ function proximaRonda() {
 
 // Desenha a lista de respostas com um filtro: pinta o botão do filtro e mostra só as respostas desse filtro
 function mostrarListaDeRespostas(filtro) {
+    // Sem frases (a troca de língua falhou), não há textos para mostrar: a lista fica como estava
+    if (frases.length === 0) {
+        return;
+    }
     ui.marcarFiltro(filtro, ultimoResultado.respostas);
     ui.mostrarRespostas(filtrarRespostas(ultimoResultado.respostas, filtro), frases, ultimoResultado.modo);
 }
